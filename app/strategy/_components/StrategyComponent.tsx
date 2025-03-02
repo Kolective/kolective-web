@@ -2,6 +2,7 @@ import CardInfluencer from '@/components/card/card-influencer';
 import React, { useState } from 'react'
 import { dataKOL } from '@/data/data-kol';
 import { Button } from '@heroui/button';
+import { motion } from 'framer-motion';
 
 interface Collection {
   id: string;
@@ -19,7 +20,7 @@ export default function StrategyComponent() {
     { id: "trending", name: "TRENDING", count: dataKOL.filter(kol => kol.followers_count > 50000).length },
     { id: "new", name: "NEW", count: dataKOL.filter(kol => kol.last_active_timestamp > 1740300000).length },
     { id: "profitable", name: "PROFITABLE", count: dataKOL.filter(kol => kol.pnl_7d > 0).length }
-  ];  
+  ];
 
   const timeframes = ["1D", "7D", "30D", "ALL"];
   const filteredKOLs = dataKOL.filter(kol => {
@@ -37,7 +38,7 @@ export default function StrategyComponent() {
   return (
     <main className="flex flex-col w-full px-4 md:px-6">
       <div className="md:hidden mt-4 mb-4">
-        <Button 
+        <Button
           className="w-full bg-foreground/10 text-center py-2"
           onPress={toggleMobileFilters}
         >
@@ -46,16 +47,25 @@ export default function StrategyComponent() {
       </div>
 
       <div className="flex flex-col md:flex-row w-full">
-        <div className={`${isMobileFiltersOpen ? 'block' : 'hidden'} md:block md:w-1/4 md:pr-4 mb-4 md:mb-0`}>
+        <motion.div
+          className={`${isMobileFiltersOpen ? 'block' : 'hidden'} md:block md:w-1/4 md:pr-4 mb-4 md:mb-0`}
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        >
           <StatsPanel collections={collections} />
           <TimeframeSelector
             timeframes={timeframes}
             activeTimeframe={activeTimeframe}
             setActiveTimeframe={setActiveTimeframe}
           />
-        </div>
+        </motion.div>
 
-        <div className="w-full md:w-3/4">
+        <motion.div className="w-full md:w-3/4"
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        >
           <FilterBar
             collections={collections}
             activeCollection={activeCollection}
@@ -67,7 +77,7 @@ export default function StrategyComponent() {
               <CardInfluencer key={idx} idx={idx} kol={kol} />
             ))}
           </div>
-        </div>
+        </motion.div>
       </div>
     </main>
   );
@@ -92,7 +102,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
       {collections.map(collection => (
         <Button
           key={collection.id}
-          className={`text-xs px-2 sm:px-3 py-1 rounded-md mr-2 mb-2 whitespace-nowrap ${activeCollection === collection.name ? 'bg-foreground/10' : 'bg-transparent'}`}
+          className={`text-xs px-2 sm:px-3 py-1 rounded-md mr-2 whitespace-nowrap ${activeCollection === collection.name ? 'bg-foreground/10' : 'bg-transparent'}`}
           variant={activeCollection === collection.name ? 'ghost' : 'flat'}
           onPress={() => setActiveCollection(collection.name)}
         >
@@ -104,8 +114,8 @@ export const FilterBar: React.FC<FilterBarProps> = ({
   );
 };
 
-export const StatsPanel = ({ 
-  collections 
+export const StatsPanel = ({
+  collections
 }: {
   collections: Collection[];
 }) => {
@@ -123,11 +133,10 @@ export const StatsPanel = ({
               {collection.name}
             </div>
             <div className="flex items-center">
-              <div className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full mr-1 ${
-                collection.id === "all" ? "bg-blue-500" :
-                collection.id === "trending" ? "bg-red-500" : 
-                collection.id === "new" ? "bg-green-500" : "bg-yellow-500"
-              }`}></div>
+              <div className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full mr-1 ${collection.id === "all" ? "bg-blue-500" :
+                collection.id === "trending" ? "bg-red-500" :
+                  collection.id === "new" ? "bg-green-500" : "bg-yellow-500"
+                }`}></div>
               <span className="text-xs sm:text-sm">{collection.count && collection.count.toLocaleString()}</span>
             </div>
           </div>
