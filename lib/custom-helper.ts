@@ -39,3 +39,25 @@ export const formatNumber = (value: number | null, options: {
 
   return `${prefix}${formatter.format(value)}${suffix}`;
 };
+
+export const formatNumberOri = (
+  value: number | null, 
+  options: {
+    decimals?: number
+    prefix?: string
+    suffix?: string
+    compact?: boolean
+  } = {}
+): string => {
+  if (value === null) return '...';
+
+  const formatter = new Intl.NumberFormat('en-US', {
+    ...(options.decimals !== undefined && {
+      minimumFractionDigits: options.decimals,
+      maximumFractionDigits: options.decimals,
+    }),
+    notation: options.compact ? 'compact' : 'standard',
+  });
+
+  return `${options.prefix ?? ''}${formatter.format(value)}${options.suffix ?? ''}`;
+};

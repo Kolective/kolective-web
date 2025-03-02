@@ -12,6 +12,7 @@ interface Collection {
 export default function StrategyComponent() {
   const [activeCollection, setActiveCollection] = useState<string>("ALL");
   const [activeTimeframe, setActiveTimeframe] = useState<string>("7D");
+  const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState<boolean>(false);
 
   const collections: Collection[] = [
     { id: "all", name: "ALL", count: dataKOL.length },
@@ -29,35 +30,42 @@ export default function StrategyComponent() {
     return true;
   });
 
+  const toggleMobileFilters = () => {
+    setIsMobileFiltersOpen(!isMobileFiltersOpen);
+  };
+
   return (
-    <main className="flex flex-col">
-      <div className="flex flex-1">
-        <div className="flex-1">
-          <div className="grid grid-cols-4 gap-4">
-            <div className="col-span-1">
-              <StatsPanel
-                collections={collections}
-              />
-              <TimeframeSelector
-                timeframes={timeframes}
-                activeTimeframe={activeTimeframe}
-                setActiveTimeframe={setActiveTimeframe}
-              />
-            </div>
+    <main className="flex flex-col w-full px-4 md:px-6">
+      <div className="md:hidden mt-4 mb-4">
+        <Button 
+          className="w-full bg-foreground/10 text-center py-2"
+          onPress={toggleMobileFilters}
+        >
+          {isMobileFiltersOpen ? 'Hide Filters' : 'Show Filters'}
+        </Button>
+      </div>
 
-            <div className="col-span-3">
-              <FilterBar
-                collections={collections}
-                activeCollection={activeCollection}
-                setActiveCollection={setActiveCollection}
-              />
+      <div className="flex flex-col md:flex-row w-full">
+        <div className={`${isMobileFiltersOpen ? 'block' : 'hidden'} md:block md:w-1/4 md:pr-4 mb-4 md:mb-0`}>
+          <StatsPanel collections={collections} />
+          <TimeframeSelector
+            timeframes={timeframes}
+            activeTimeframe={activeTimeframe}
+            setActiveTimeframe={setActiveTimeframe}
+          />
+        </div>
 
-              <div className="grid grid-cols-3 gap-4 mt-4">
-                {filteredKOLs.map((kol, idx) => (
-                  <CardInfluencer key={idx} idx={idx} kol={kol} />
-                ))}
-              </div>
-            </div>
+        <div className="w-full md:w-3/4">
+          <FilterBar
+            collections={collections}
+            activeCollection={activeCollection}
+            setActiveCollection={setActiveCollection}
+          />
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+            {filteredKOLs.map((kol, idx) => (
+              <CardInfluencer key={idx} idx={idx} kol={kol} />
+            ))}
           </div>
         </div>
       </div>
@@ -78,13 +86,13 @@ export const FilterBar: React.FC<FilterBarProps> = ({
 }) => {
   return (
     <div
-      className="flex items-center rounded-lg p-2"
+      className="flex flex-wrap items-center rounded-lg p-2 overflow-x-auto"
       style={{ backgroundColor: "rgba(255, 255, 255, 0.03)" }}
     >
       {collections.map(collection => (
         <Button
           key={collection.id}
-          className={`text-xs px-3 py-1 rounded-md mr-2 ${activeCollection === collection.name ? 'bg-foreground/10' : 'bg-transparent'}`}
+          className={`text-xs px-2 sm:px-3 py-1 rounded-md mr-2 mb-2 whitespace-nowrap ${activeCollection === collection.name ? 'bg-foreground/10' : 'bg-transparent'}`}
           variant={activeCollection === collection.name ? 'ghost' : 'flat'}
           onPress={() => setActiveCollection(collection.name)}
         >
@@ -108,19 +116,19 @@ export const StatsPanel = ({
     >
       <h3 className="text-sm text-gray-400 mb-4">DETAILS</h3>
 
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-3 gap-2 sm:gap-4">
         {collections.slice(0, 3).map(collection => (
           <div key={collection.id} className="flex flex-col">
-            <div className="text-sm text-gray-400 mb-1">
+            <div className="text-xs sm:text-sm text-gray-400 mb-1 truncate">
               {collection.name}
             </div>
             <div className="flex items-center">
-              <div className={`w-3 h-3 rounded-full mr-1 ${
+              <div className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full mr-1 ${
                 collection.id === "all" ? "bg-blue-500" :
                 collection.id === "trending" ? "bg-red-500" : 
                 collection.id === "new" ? "bg-green-500" : "bg-yellow-500"
               }`}></div>
-              <span>{collection.count && collection.count.toLocaleString()}</span>
+              <span className="text-xs sm:text-sm">{collection.count && collection.count.toLocaleString()}</span>
             </div>
           </div>
         ))}
@@ -150,7 +158,7 @@ export const TimeframeSelector: React.FC<TimeframeSelectorProps> = ({
         {timeframes.map(timeframe => (
           <button
             key={timeframe}
-            className={`text-xs px-3 py-1 rounded-md mr-2 mb-2 ${activeTimeframe === timeframe ? 'bg-blue-500/50' : 'bg-foreground/5'}`}
+            className={`text-xs px-2 sm:px-3 py-1 rounded-md mr-2 mb-2 ${activeTimeframe === timeframe ? 'bg-blue-500/50' : 'bg-foreground/5'}`}
             onClick={() => setActiveTimeframe(timeframe)}
           >
             {timeframe}

@@ -40,11 +40,11 @@ export default function Navbar() {
                 <Link
                   className={clsx(
                     "text-sm font-normal px-4 py-2 rounded-none",
-                    pathname === item.href ? "text-foreground" : "text-gray-400"
+                    pathname.startsWith(item.href) ? "text-foreground" : "text-gray-400"
                   )}
                   href={item.href}
                 >
-                  {pathname === item.href && (
+                  {pathname.startsWith(item.href) && (
                     <motion.span
                       layoutId="bubble"
                       className="absolute inset-0 z-10 border-b-2 border-warning -mb-1 mix-blend-difference rounded-none"
@@ -88,14 +88,14 @@ export default function Navbar() {
       </NavbarContent>
 
       <NavbarMenu className="z-[1000] absolute inset-0 full-height bg-background/50">
-        <div className="mx-4 flex-col gap-5 flex-grow inline-flex justify-between py-10">
+        <div className="mx-4 flex-col gap-5 flex-grow inline-flex py-10">
           <div className="inline-flex flex-col gap-5">
             {siteConfig.navMenuItems.map((item, index) => (
               <NavbarMenuItem key={`${item}-${index}`}>
                 <Link
                   className={clsx(
                     "border-l-2 pl-5 h-10",
-                    pathname === item.href ? "border-primary text-primary" : "border-transparent"
+                    pathname.startsWith(item.href) ? "border-primary text-primary" : "border-transparent"
                   )}
                   color="foreground"
                   href={item.href}

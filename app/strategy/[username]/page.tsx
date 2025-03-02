@@ -1,33 +1,22 @@
-"use client";
+import { dataKOL } from "@/data/data-kol";
+import KOLComponent from "./_components/KOLComponent";
 
-import { subtitle } from '@/components/primitives'
-import { cn } from '@/lib/utils'
-import { motion } from 'framer-motion'
-import React from 'react'
+interface Params {
+  params: Promise<{ username: string }>
+}
 
-export default function Page() {
+export default async function page({
+  params
+}: Params) {
+  const { username } = await params;
+
+  const curKOL = dataKOL.find(kol => kol.twitter_username === username);
+
+  if (!curKOL) {
+    return <div className="pt-28">KOL not found</div>;
+  }
+
   return (
-    <div className="py-5 pt-24 overflow-x-hidden w-full">
-      <div className="flex flex-col gap-3 items-start">
-        <div className="flex flex-col items-start justify-start pb-5">
-          <motion.span
-            className={cn(subtitle({ sizeText: "xl" }), "font-bold text-start")}
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          >
-            Dashboard
-          </motion.span>
-          <motion.span
-            className={cn(subtitle(), "text-start")}
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-          >
-            Manage your strategy here.
-          </motion.span>
-        </div>
-      </div>
-    </div>
+    <KOLComponent curKOL={curKOL} />
   )
 }
