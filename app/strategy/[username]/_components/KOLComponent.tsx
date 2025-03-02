@@ -66,7 +66,12 @@ export default function KOLComponent({
             <div className='hidden'>
               <ButtonSoniclabs text='Follow Strategy' />
             </div>
-            <ButtonSoniclabsGlow text='Already Followed' />
+            <div className='flex flex-row gap-3'>
+              <ButtonSoniclabsGlow text='Already Followed' />
+              <Button variant='flat' color='danger' className='rounded-md'>
+                Unfollow
+              </Button>
+            </div>
             <Chip variant='flat' color='primary'>Check dashboard to manage your strategy</Chip>
           </motion.div>
         </div>

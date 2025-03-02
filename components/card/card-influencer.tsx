@@ -68,7 +68,7 @@ export default function CardKOL({ idx, kol }: CardKOLProps) {
           )}
         </div>
         <div className="flex-1 min-w-0">
-          <div className="text-sm font-medium truncate flex flex-row gap-1 items-center">{kol.name || kol.twitter_name || "Unknown KOL"} <VerifiedXIcon className='min-w-5 min-h-5 h-5 w-5' fill='#1D9BF0'/></div>
+          <div className="text-sm font-medium truncate flex flex-row gap-1 items-center">{kol.name || kol.twitter_name || "Unknown KOL"} <VerifiedXIcon className='min-w-5 min-h-5 h-5 w-5' fill='#1D9BF0' /></div>
           <div className="text-xs text-gray-400 flex items-center space-x-1">
             <span>@{kol.twitter_username || "unknown"}</span>
           </div>
@@ -78,7 +78,7 @@ export default function CardKOL({ idx, kol }: CardKOLProps) {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 p-3 gap-3">
+      <div className="flex justify-between p-3 gap-3 px-5">
         <div className="space-y-3">
           <div className="space-y-1">
             <div className="text-xs text-gray-400">Portfolio Value</div>
@@ -89,12 +89,14 @@ export default function CardKOL({ idx, kol }: CardKOLProps) {
             <div className="text-xs text-gray-400">Win Rate</div>
             <div className="text-sm font-medium">
               {((kol.winrate || 0) * 100).toFixed(0)}%
-              <span className="text-xs text-gray-500 ml-1">({kol.profit_num || 0}/{kol.token_num || 0})</span>
+              <span className="text-xs text-gray-500 ml-1">
+                ({kol.profit_num || 0}/{kol.token_num || 0})
+              </span>
             </div>
           </div>
         </div>
 
-        <div className="space-y-3">
+        <div className="space-y-3 text-right">
           <div className="space-y-1">
             <div className="text-xs text-gray-400">PnL (7D)</div>
             <div className={`text-sm font-medium ${getPnlColor(kol.pnl_7d || 0)}`}>
@@ -104,7 +106,7 @@ export default function CardKOL({ idx, kol }: CardKOLProps) {
 
           <div className="space-y-1">
             <div className="text-xs text-gray-400">Trades (7D)</div>
-            <div className="text-sm font-medium flex items-center">
+            <div className="text-sm font-medium flex justify-end items-center">
               <span className="text-green-500 mr-2">B: {kol.buy_7d || 0}</span>
               <span className="text-red-500">S: {kol.sell_7d || 0}</span>
             </div>
