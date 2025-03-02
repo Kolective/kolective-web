@@ -4,6 +4,7 @@ import { subtitle } from '@/components/primitives'
 import { cn } from '@/lib/utils'
 import { motion } from 'framer-motion'
 import React from 'react'
+import DashboardComponent from './_components/DashboardComponent';
 
 export default function Page() {
   return (
@@ -27,6 +28,7 @@ export default function Page() {
             Manage your strategy here.
           </motion.span>
         </div>
+        <DashboardComponent />
       </div>
     </div>
   )
