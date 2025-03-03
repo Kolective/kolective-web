@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import https from 'https';
 
 let baseURL = process.env.NEXT_PUBLIC_API_AGENT_URL || '';
@@ -17,9 +17,11 @@ const apiSet = axios.create({
 });
 
 const apiAgent = {
-  get: (endpoint: any) => apiSet.get(endpoint).then((res: any) => (res as any).data),
-  post: (endpoint: any, body?: Record<any, any>): Promise<any> =>
-    apiSet.post(endpoint, body).then((res: any) => (res as any).data),
+  get: <T = any>(endpoint: string): Promise<T> =>
+    apiSet.get<T>(endpoint).then((res: AxiosResponse<T>) => res.data),
+
+  post: <T = any, B = Record<string, any>>(endpoint: string, body?: B): Promise<T> =>
+    apiSet.post<T>(endpoint, body).then((res: AxiosResponse<T>) => res.data),
 };
 
 export default apiAgent;

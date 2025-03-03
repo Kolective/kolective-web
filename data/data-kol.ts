@@ -406,7 +406,7 @@ export const dataKOL = [
     "updated_at": 1740796946,
     "refresh_requested_at": null,
     "avg_holding_peroid": 1317460,
-    trade: [
+    "trade": [
       {
         "token": {
           "address": "JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN",
