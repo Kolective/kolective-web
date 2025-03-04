@@ -5,7 +5,6 @@ import '@rainbow-me/rainbowkit/styles.css';
 import type { ThemeProviderProps } from "next-themes";
 import { RainbowKitProvider, darkTheme } from '@rainbow-me/rainbowkit'
 
-import * as React from "react";
 import { HeroUIProvider } from "@heroui/system";
 import { useRouter } from "next/navigation";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
@@ -36,8 +35,8 @@ export default function Providers({ children, themeProps }: ProvidersProps) {
 
   return (
     <HeroUIProvider navigate={router.push}>
-      <WagmiProvider config={wagmiConfig}>
-        <QueryClientProvider client={queryClient}>
+      <QueryClientProvider client={queryClient}>
+        <WagmiProvider config={wagmiConfig}>
           <RainbowKitProvider
             theme={darkTheme({
               accentColor: '#7b3fe4',
@@ -53,8 +52,8 @@ export default function Providers({ children, themeProps }: ProvidersProps) {
               {children}
             </NextThemesProvider>
           </RainbowKitProvider>
-        </QueryClientProvider>
-      </WagmiProvider>
+        </WagmiProvider>
+      </QueryClientProvider>
     </HeroUIProvider>
   );
 }
