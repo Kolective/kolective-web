@@ -8,9 +8,9 @@ import { motion } from "framer-motion";
 export function DocsComponent() {
   const features = [
     {
-      title: "Introduction Soniclabs x AI Agent",
+      title: "Introduction Soniclabs x ZerePy",
       description:
-        "Autonomously trade by following your KOL strategy.",
+        "Zerebro is an AI agent that autonomously manages actions across domains like social media and blockchain, adapting based on experience to deliver highly personalized results.",
       skeleton: <SkeletonOne />,
       className:
         "col-span-1 lg:col-span-4 border-b lg:border-r dark:border-neutral-800",
@@ -101,7 +101,7 @@ export const SkeletonOne = () => {
             alt="header"
             width={1200}
             height={1200}
-            className="h-full w-full aspect-square object-cover rounded-sm object-center"
+            className="h-full max-h-[400px] w-full aspect-square object-cover rounded-sm object-center"
           />
         </div>
       </div>

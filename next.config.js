@@ -10,6 +10,21 @@ const nextConfig = {
       },
       {
         protocol: "https",
+        hostname: "gmgn.ai",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "dd.dexscreener.com",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "s2.coinmarketcap.com",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
         hostname: "assets.aceternity.com",
         pathname: "/**",
       }

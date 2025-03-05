@@ -4,8 +4,12 @@ import { subtitle } from '@/components/primitives'
 import { cn } from '@/lib/utils'
 import { motion } from 'framer-motion'
 import React from 'react'
+import { FaucetComponent } from './_components/FaucetComponent';
+import { useToken } from '@/hooks/query/api/useToken';
 
 export default function Page() {
+  const { tData } = useToken();
+
   return (
     <div className="py-5 pt-24 overflow-x-hidden w-full">
       <div className="flex flex-col gap-3 items-start">
@@ -27,6 +31,7 @@ export default function Page() {
             Claims your faucet for testing purpose here.
           </motion.span>
         </div>
+        <FaucetComponent tData={tData || []} />
       </div>
     </div>
   )
