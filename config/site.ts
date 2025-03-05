@@ -1,8 +1,8 @@
 export type SiteConfig = typeof siteConfig;
 
 export const siteConfig = {
-  name: "Sonic",
-  description: "Discover and manage your vaults in the Web3 ecosystem.",
+  name: "Kolective",
+  description: "Follow the Experts, Trade Smarter—Leverage Top Influencer Strategies to Maximize Your Yield.",
   navItems: [
     {
       label: "Home",
