@@ -8,33 +8,27 @@ import { Image } from "@heroui/image";
 import { Wallet } from "lucide-react";
 import { useCallback, useState } from "react";
 
-const tokenColors: Record<string, "success" | "secondary" | "warning" | "primary" | "default" | "danger"> = {
-  pepe: "success",
-  trump: "danger",
-  dogeai: "warning",
-  wif: "primary",
-  stonks: "secondary",
-};
-
 export function FaucetComponent({
-  tData,
+  token,
 }: {
-  tData: TokenResponse[];
+  token?: TokenResponse;
 }) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 relative z-10 py-10 max-w-7xl mx-auto">
-      {tData && tData.length > 0 && tData.map((token, index) => {
-        const buttonColor = tokenColors[token?.symbol.toLowerCase()] || "gray";
-
-        return (
-          <Feature
-            key={index}
-            index={index}
-            token={token}
-            buttonColor={buttonColor}
-          />
-        );
-      })}
+      <Feature
+        index={0}
+        token={token || {
+          name: '',
+          symbol: '',
+          address: '',
+          chain: '',
+          decimals: 0,
+          logo: '',
+          priceChange24H: 0,
+          tags: [],
+        }}
+        buttonColor={"warning"}
+      />
     </div>
   );
 }
@@ -100,7 +94,7 @@ const Feature = ({
         <div className="opacity-0 group-hover/feature:opacity-100 transition duration-200 absolute inset-0 h-full w-full bg-gradient-to-b from-neutral-100 dark:from-neutral-800 to-transparent pointer-events-none" />
       )}
       <div className="flex w-full justify-center items-center">
-        <Image src={token.logoURI} alt={token.name} width={50} height={50} className="mx-auto" />
+        <Image src={token?.logo || "https://s2.coinmarketcap.com/static/img/coins/64x64/32684.png"} alt={token.name} width={50} height={50} className="mx-auto" />
       </div>
 
       <Button variant="flat" color={buttonColor as "success" | "secondary" | "warning" | "primary" | "default" | "danger" | undefined} className={cn("mt-4 mx-10", `flex flex-row items-center`)} onPress={handleMint}>

@@ -6,9 +6,12 @@ import { motion } from 'framer-motion'
 import React from 'react'
 import { FaucetComponent } from './_components/FaucetComponent';
 import { useToken } from '@/hooks/query/api/useToken';
+import { TokenResponse } from '@/types/api/token.types';
 
 export default function Page() {
   const { tData } = useToken();
+
+  const sToken = tData && tData.find((token: TokenResponse) => token.symbol.toLowerCase() === 'sonic');
 
   return (
     <div className="py-5 pt-24 overflow-x-hidden w-full">
@@ -31,7 +34,9 @@ export default function Page() {
             Claims your faucet for testing purpose here.
           </motion.span>
         </div>
-        <FaucetComponent tData={tData || []} />
+        <div>
+          <FaucetComponent token={sToken} />
+        </div>
       </div>
     </div>
   )

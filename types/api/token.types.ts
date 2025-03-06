@@ -6,8 +6,9 @@ export const TokenResponseSchema = z.object({
   address: z.string(),
   chain: z.string(),
   decimals: z.number().int().positive(),
-  logoURI: z.string().url(),
-  price: z.number().positive(),
+  logo: z.string().url(),
+  priceChange24H: z.number().positive(),
+  tags: z.array(z.string()),
 });
 
 export type TokenResponse = z.infer<typeof TokenResponseSchema>;
