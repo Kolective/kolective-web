@@ -5,8 +5,10 @@ import request from "graphql-request";
 import { useAccount } from "wagmi";
 
 interface TranferResponse {
-  items: Transfers[];
-}
+  transfers: {
+    items: Transfers[];
+  }
+};
 
 export const useTransfersUser = () => {
   const { address } = useAccount();
@@ -16,12 +18,12 @@ export const useTransfersUser = () => {
     queryFn: async () => {
       if (address) {
         return await request(
-          process.env.NEXT_PUBLIC_API_GRAPHQL_URL || "", 
+          process.env.NEXT_PUBLIC_API_GRAPHQL_URL || "",
           queryTransfersByUser((address).toString())
         );
       }
 
-      return { items: [] };
+      return { transfers: { items: [] } };
     },
     enabled: !!address,
     refetchInterval: 10000,
@@ -29,7 +31,7 @@ export const useTransfersUser = () => {
   })
 
   return {
-    tuData: data,
+    tuData: data?.transfers.items || [],
     tuLoading: isLoading,
     tuError: error,
     tuRefetch: refetch,

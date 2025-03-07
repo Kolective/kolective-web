@@ -2,7 +2,7 @@ import { gql } from "graphql-request";
 
 export const queryTransfers = () => {
   return gql`{
-    swaps(
+    transfers(
       orderBy: "blockTimestamp", 
       orderDirection: "desc"
     ) {
@@ -21,7 +21,7 @@ export const queryTransfers = () => {
 
 export const queryTransfersByUser = (address: string) => {
   return gql`{
-    swaps(
+    transfers(
       orderBy: "blockTimestamp", 
       orderDirection: "desc",
       where: {from: "${address}"}

@@ -3,13 +3,14 @@ import { useQuery } from '@tanstack/react-query';
 import api from '../../../config/api.config';
 
 interface KOL {
-  followedKOLs: {
+  followedKOL: {
+    id: number;
+    kolId: number;
+    kol: KOLResponse;
+    userAddress: string;
     createdAt: string;
     updatedAt: string;
-    kol: KOLResponse[];
-    kolId: string;
-    userAddress: string;
-  }[];
+  };
 }
 
 export const useKOLFollowed = ({
@@ -20,14 +21,32 @@ export const useKOLFollowed = ({
   const { data, isLoading, refetch, error } = useQuery<KOL>({
     queryKey: ['kolFollowed', address],
     queryFn: async () => {
-      return await api.get(`api/kol/followed/${address.toLowerCase()}`);
+      return await api.get(`api/kol/followed/${address}`);
     },
   });
 
-  const datas: KOLResponse[] = (Array.isArray(data?.followedKOLs[0]?.kol) ? data?.followedKOLs[0]?.kol : [data?.followedKOLs[0]?.kol]).filter(kol => kol !== undefined) as KOLResponse[];
+  console.log("data", data);
+
+  const defaultKOLResponse: KOLResponse = {
+    id: 0,
+    name: '',
+    username: '',
+    avatar: '',
+    followersTwitter: 0,
+    followersKOL: 0,
+    riskRecommendation: 'CONSERVATIVE',
+    avgProfitD: 0,
+    rankFollowersKOL: 0,
+    rankAvgProfitD: 0,
+    createdAt: '',
+    updatedAt: '',
+    tweets: []
+  };
+
+  const datas: KOLResponse = data?.followedKOL.kol || defaultKOLResponse;
 
   return {
-    kfData: datas[0],
+    kfData: datas,
     kfLoading: isLoading,
     kfRefetch: refetch,
     kfError: error,

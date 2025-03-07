@@ -14,7 +14,7 @@ export default function GeneratedContent() {
   const { kfData, kfLoading } = useKOLFollowed({ address: address as string });
 
   return (
-    <div className="max-w-sm md:max-w-6xl">
+    <div className="max-w-full md:max-w-6xl">
       {(kfLoading) && <Loading />}
       <p className="text-neutral-800 dark:text-neutral-200 text-sm md:text-lg font-normal mb-4">
         You classified as <span className="font-semibold">{kfData && kfData.riskRecommendation}</span> risk. here&apos;s our recommended kol for you:

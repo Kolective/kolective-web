@@ -5,7 +5,9 @@ import request from "graphql-request";
 import { useAccount } from "wagmi";
 
 interface SwapResponse {
-  items: Swaps[];
+  swaps: {
+    items: Swaps[];
+  }
 }
 
 export const useSwapsUser = () => {
@@ -16,12 +18,12 @@ export const useSwapsUser = () => {
     queryFn: async () => {
       if (address) {
         return await request(
-          process.env.NEXT_PUBLIC_API_GRAPHQL_URL || "", 
+          process.env.NEXT_PUBLIC_API_GRAPHQL_URL || "",
           querySwapsByUser((address).toString())
         );
       }
 
-      return { items: [] };
+      return { swaps: { items: [] } };
     },
     enabled: !!address,
     refetchInterval: 10000,
@@ -29,7 +31,7 @@ export const useSwapsUser = () => {
   })
 
   return {
-    suData: data,
+    suData: data?.swaps.items || [],
     suLoading: isLoading,
     suError: error,
     suRefetch: refetch,
