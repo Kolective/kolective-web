@@ -7,7 +7,7 @@ export default function Loading({
   className?: string
 }) {
   return (
-    <div className={cn(`fixed z-[100] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 backdrop-blur-sm w-full h-full`, className)}>
+    <div className={cn(`fixed z-[100] inset-0 flex items-center justify-center backdrop-blur-sm w-screen h-screen`, className)}>
       <div className="loader"></div>
     </div>
   )

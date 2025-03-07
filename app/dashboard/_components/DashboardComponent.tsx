@@ -13,7 +13,7 @@ export default function DashboardComponent() {
           title={
             <div className="flex items-center space-x-2">
               <UserRound />
-              <span>Following KOL</span>
+              <span>Overview</span>
             </div>
           }
         >

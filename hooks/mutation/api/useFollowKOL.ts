@@ -1,19 +1,13 @@
-import { MockTokenABI } from "@/lib/abis/MockTokenABI";
-import { denormalize, valueToBigInt } from "@/lib/bignumber";
-import { DECIMALS_TOKEN } from "@/lib/constants";
-import { config } from "@/lib/wagmi";
+import api from "@/config/api.config";
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { useAccount } from "wagmi";
-import {
-  waitForTransactionReceipt,
-  writeContract,
-} from "wagmi/actions";
 
 type Status = "idle" | "loading" | "success" | "error";
 
-export const useMint = () => {
-  const { address: userAddress } = useAccount();
+export const useFollowKOL = () => {
+  const { address } = useAccount();
+  const [result, setResult] = useState<{ txhash: string } | null>(null);
 
   const [steps, setSteps] = useState<
     Array<{
@@ -28,26 +22,14 @@ export const useMint = () => {
     },
   ]);
 
-  const [txHash, setTxHash] = useState<HexAddress | null>(null);
-
   const mutation = useMutation({
     mutationFn: async ({
-      addressToken,
-      amount,
-      decimals
+      kolId
     }: {
-      addressToken: HexAddress;
-      amount: string;
-      decimals?: number;
+      kolId: number;
     }) => {
       try {
         setSteps([{ step: 1, status: "idle" }]);
-
-        if (!amount || !userAddress) {
-          throw new Error("Invalid parameters");
-        }
-
-        const dAmount = denormalize(amount || "0", decimals ?? DECIMALS_TOKEN);
 
         setSteps((prev) =>
           prev.map((item) => {
@@ -58,21 +40,8 @@ export const useMint = () => {
           })
         );
 
-        const txHash = await writeContract(config, {
-          address: addressToken,
-          abi: MockTokenABI,
-          functionName: "mint",
-          args: [
-            userAddress,
-            valueToBigInt(dAmount),
-          ],
-        });
-
-        setTxHash(txHash);
-
-        const result = await waitForTransactionReceipt(config, {
-          hash: txHash,
-        });
+        const result = await api.post("api/kol/follow", { kolId: kolId, userAddress: address });
+        setResult(result);
 
         setSteps((prev) =>
           prev.map((item) => {
@@ -85,7 +54,7 @@ export const useMint = () => {
 
         return result;
       } catch (e) {
-        console.error("Bid Error", e);
+        console.error("Error", e);
 
         setSteps((prev) =>
           prev.map((step) => {
@@ -101,5 +70,5 @@ export const useMint = () => {
     },
   });
 
-  return { steps, mutation, txHash };
+  return { steps, mutation, result };
 };

@@ -12,7 +12,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { WagmiProvider } from 'wagmi';
 import { sonicBlazeTestnet } from 'wagmi/chains';
-import { useWagmiConfig } from "@/lib/wagmi";
+import { config } from "@/lib/wagmi";
 
 export interface ProvidersProps {
   children: React.ReactNode;
@@ -31,12 +31,11 @@ const queryClient = new QueryClient();
 
 export default function Providers({ children, themeProps }: ProvidersProps) {
   const router = useRouter();
-  const wagmiConfig = useWagmiConfig();
 
   return (
     <HeroUIProvider navigate={router.push}>
       <QueryClientProvider client={queryClient}>
-        <WagmiProvider config={wagmiConfig}>
+        <WagmiProvider config={config}>
           <RainbowKitProvider
             theme={darkTheme({
               accentColor: '#7b3fe4',

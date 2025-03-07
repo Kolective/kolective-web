@@ -1,19 +1,13 @@
-import { MockTokenABI } from "@/lib/abis/MockTokenABI";
-import { denormalize, valueToBigInt } from "@/lib/bignumber";
-import { DECIMALS_TOKEN } from "@/lib/constants";
-import { config } from "@/lib/wagmi";
+import apiAgent from "@/config/api-agent.config";
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { useAccount } from "wagmi";
-import {
-  waitForTransactionReceipt,
-  writeContract,
-} from "wagmi/actions";
 
 type Status = "idle" | "loading" | "success" | "error";
 
-export const useMint = () => {
-  const { address: userAddress } = useAccount();
+export const useGenerateAI = () => {
+  const { address } = useAccount()
+  const [result, setResult] = useState(null);
 
   const [steps, setSteps] = useState<
     Array<{
@@ -26,28 +20,20 @@ export const useMint = () => {
       step: 1,
       status: "idle",
     },
+    {
+      step: 2,
+      status: "idle",
+    }
   ]);
-
-  const [txHash, setTxHash] = useState<HexAddress | null>(null);
 
   const mutation = useMutation({
     mutationFn: async ({
-      addressToken,
-      amount,
-      decimals
+      formattedSubmission
     }: {
-      addressToken: HexAddress;
-      amount: string;
-      decimals?: number;
+      formattedSubmission: string;
     }) => {
       try {
         setSteps([{ step: 1, status: "idle" }]);
-
-        if (!amount || !userAddress) {
-          throw new Error("Invalid parameters");
-        }
-
-        const dAmount = denormalize(amount || "0", decimals ?? DECIMALS_TOKEN);
 
         setSteps((prev) =>
           prev.map((item) => {
@@ -58,21 +44,8 @@ export const useMint = () => {
           })
         );
 
-        const txHash = await writeContract(config, {
-          address: addressToken,
-          abi: MockTokenABI,
-          functionName: "mint",
-          args: [
-            userAddress,
-            valueToBigInt(dAmount),
-          ],
-        });
-
-        setTxHash(txHash);
-
-        const result = await waitForTransactionReceipt(config, {
-          hash: txHash,
-        });
+        const response = await apiAgent.post("generate-risk-profile", { data: formattedSubmission, user_address: address });
+        setResult(response);
 
         setSteps((prev) =>
           prev.map((item) => {
@@ -83,7 +56,7 @@ export const useMint = () => {
           })
         );
 
-        return result;
+        return response;
       } catch (e) {
         console.error("Bid Error", e);
 
@@ -101,5 +74,5 @@ export const useMint = () => {
     },
   });
 
-  return { steps, mutation, txHash };
+  return { steps, mutation, result };
 };

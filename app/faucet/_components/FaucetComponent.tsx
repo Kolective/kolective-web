@@ -99,12 +99,12 @@ const Feature = ({
 
       <Button variant="flat" color={buttonColor as "success" | "secondary" | "warning" | "primary" | "default" | "danger" | undefined} className={cn("mt-4 mx-10", `flex flex-row items-center`)} onPress={handleMint}>
         <Wallet className="w-4 h-4" />
-        <span>Claim 1000 ${token.symbol}</span>
+        <span>Claim 1000 $SONIC</span>
       </Button>
 
       <Button variant="flat" color={buttonColor as "success" | "secondary" | "warning" | "primary" | "default" | "danger" | undefined} className={cn("mt-4 mx-10", `flex flex-row items-center`)} onPress={handleMintAI}>
         <Wallet className="w-4 h-4" />
-        <span>Claim 1000 ${token.symbol} to AI</span>
+        <span>Claim 1000 $SONIC to AI</span>
       </Button>
 
       <ModalTransactionCustom

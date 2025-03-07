@@ -16,16 +16,16 @@ export function DocsComponent() {
         "col-span-1 lg:col-span-4 border-b lg:border-r dark:border-neutral-800",
     },
     {
-      title: "Select KOL Strategy",
+      title: "Get Best KOL Strategy",
       description:
-        "Choose from a wide range of KOL strategies.",
+        "Get your best kol strategy based on your risk.",
       skeleton: <SkeletonTwo />,
       className: "border-b col-span-1 lg:col-span-2 dark:border-neutral-800",
     },
     {
-      title: "Analyse and Learn",
+      title: "Bridge with DeBridge",
       description:
-        "Our AI Agent will learn from your KOL strategy and analyse the market.",
+        "Bridge your assets with DeBridge to get your asset with lightspeed, because time is $$$.",
       skeleton: <SkeletonThree />,
       className:
         "col-span-1 lg:col-span-3 lg:border-r  dark:border-neutral-800",
@@ -120,7 +120,7 @@ export const SkeletonThree = () => {
       <div className="w-full  mx-auto bg-transparent dark:bg-transparent group h-full">
         <div className="flex flex-1 w-full h-full flex-col space-y-2  relative">
           <Image
-            src="/images/chart-trading.jpg"
+            src="https://debridge.finance/assets/img/meta-logo.jpg"
             alt="header"
             width={1200}
             height={1200}

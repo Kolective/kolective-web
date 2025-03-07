@@ -25,6 +25,11 @@ const nextConfig = {
       },
       {
         protocol: "https",
+        hostname: "debridge.finance",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
         hostname: "assets.aceternity.com",
         pathname: "/**",
       }

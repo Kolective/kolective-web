@@ -12,7 +12,7 @@ export const useAddressAI = () => {
       return response
     },
     retry: 5,
-    retryDelay: 1000,
+    retryDelay: 100000,
     refetchInterval: 5000,
     retryOnMount: false,
     refetchOnWindowFocus: false,

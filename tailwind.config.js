@@ -1,4 +1,5 @@
 import { heroui } from "@heroui/theme"
+// import { flattenColorPalette } from "tailwindcss/tailwind-utils";
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -21,3 +22,14 @@ module.exports = {
   darkMode: "class",
   plugins: [heroui()],
 }
+
+// function addVariablesForColors({ addBase, theme }) {
+//   let allColors = flattenColorPalette(theme("colors"));
+//   let newVars = Object.fromEntries(
+//     Object.entries(allColors).map(([key, val]) => [`--${key}`, val])
+//   );
+
+//   addBase({
+//     ":root": newVars,
+//   });
+// }

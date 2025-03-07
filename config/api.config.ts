@@ -7,7 +7,7 @@ if (baseURL && !baseURL.endsWith('/')) {
 }
 
 const apiSet = axios.create({
-  baseURL
+  baseURL: baseURL
 });
 
 const api = {
@@ -16,6 +16,12 @@ const api = {
 
   post: <T = any, B = Record<string, any>>(endpoint: string, body?: B): Promise<T> =>
     apiSet.post<T>(endpoint, body).then((res: AxiosResponse<T>) => res.data),
+
+  put: <T = any, B = Record<string, any>>(endpoint: string, body?: B): Promise<T> =>
+    apiSet.put<T>(endpoint, body).then((res: AxiosResponse<T>) => res.data),
+
+  delete: <T = any, B = Record<any, any>>(endpoint: string, body?: B): Promise<T> =>
+    apiSet.delete<T>(endpoint, body as any).then((res: AxiosResponse<T>) => res.data),
 };
 
 export default api;
