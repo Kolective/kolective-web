@@ -21,7 +21,7 @@ export default function GeneratedContent() {
       </p>
       {kfData && (
         <Card className="p-6 bg-background/50 shadow-lg rounded-xl border-2 border-warning">
-          <CardHeader className="flex flex-row justify-between items-center">
+          <CardHeader className="flex flex-col gap-5 sm:flex-row justify-between items-center">
             <div className='flex flex-row gap-4 items-center'>
               <Avatar src={kfData.avatar} size="lg" className="border-2 border-primary" />
               <div>
@@ -29,7 +29,7 @@ export default function GeneratedContent() {
                 <p className="text-gray-500 text-sm">@{kfData.username}</p>
               </div>
             </div>
-            <ButtonSoniclabsGlow onClick={() => {}} text="Follow KOL" />
+            <ButtonSoniclabsGlow onClick={() => {}} text="Follow KOL"/>
           </CardHeader>
           <CardBody className="space-y-2">
             <p className="text-sm text-gray-300">👥 Followers Twitter: <span className="font-medium">{kfData.followersTwitter.toLocaleString()}</span></p>

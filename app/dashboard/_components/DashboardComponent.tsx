@@ -1,8 +1,8 @@
 import { Tabs, Tab } from "@heroui/tabs";
-import { Brain, UserRound, Wallet } from "lucide-react";
+import { Brain, MousePointerClick, UserRound, Wallet } from "lucide-react";
 import DashboardMainWallet from "./DashboardMainWallet";
 import DashboardAIWallet from "./DashboardAIWallet";
-import DashboardKOL from "./DashboardKOL";
+import DashboardOverview from "./DashboardOverview";
 
 export default function DashboardComponent() {
   return (
@@ -17,7 +17,18 @@ export default function DashboardComponent() {
             </div>
           }
         >
-          <DashboardKOL />
+          <DashboardOverview />
+        </Tab>
+        <Tab
+          key="positions"
+          title={
+            <div className="flex items-center space-x-2">
+              <MousePointerClick />
+              <span>Positions</span>
+            </div>
+          }
+        >
+          <DashboardMainWallet />
         </Tab>
         <Tab
           key="main"

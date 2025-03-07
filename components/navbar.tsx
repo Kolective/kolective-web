@@ -75,7 +75,7 @@ export default function Navbar() {
       <NavbarContent className="xl:hidden basis-1 pl-4">
         <div className="flex justify-between items-center w-full">
           <NavbarMenuToggle className="p-5 -ml-5" />
-          <div className="flex flex-row gap-3">
+          <div className="flex flex-row gap-3 items-center">
             <Link target="_blank" href={siteConfig.links.docs} title="Docs">
               <BookText className="text-default-500 h-5 w-5" />
             </Link>

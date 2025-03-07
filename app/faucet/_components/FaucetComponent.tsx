@@ -18,9 +18,10 @@ export function FaucetComponent({
       <Feature
         index={0}
         token={token || {
+          id: 0,
           name: '',
           symbol: '',
-          address: '',
+          addressToken: '',
           chain: '',
           decimals: 0,
           logo: '',
@@ -61,7 +62,7 @@ const Feature = ({
 
   const handleMint = async () => {
     mintMutation.mutate({
-      addressToken: token.address as HexAddress,
+      addressToken: token.addressToken as HexAddress,
       amount: "1000",
       decimals: token.decimals,
     }, {

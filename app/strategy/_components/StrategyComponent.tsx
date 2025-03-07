@@ -4,16 +4,17 @@ import React from "react";
 import CreateWalletContent from "./CreateWalletContent";
 import QuestionnaireContent from "./QuestionnaireContent";
 import GeneratedContent from "./GeneratedContent";
-import { useAccount } from "wagmi";
-import { useAddressAI } from "@/hooks/query/useAddressAI";
+// import { useAccount } from "wagmi";
+// import { useAddressAI } from "@/hooks/query/useAddressAI";
 // import Loading from "@/components/loader/loading";
 import { TracingBeam } from "@/components/ui/tracing-beam";
 import { subtitle } from "@/components/primitives";
 import { cn } from "@/lib/utils";
 
 const StrategyComponent: React.FC = () => {
-  const { isConnected } = useAccount();
-  const { addressAI, laAI } = useAddressAI();
+  // const { isConnected } = useAccount();
+  // const { addressAI, laAI } = useAddressAI();
+  const addressAI = "0x123";
 
   // if (laAI) {
   //   return <Loading className="z-[90]" />;
@@ -31,7 +32,7 @@ const StrategyComponent: React.FC = () => {
           <QuestionnaireContent />
         </div>
         <div>
-          <span className={cn(subtitle({ sizeText: "lxl" }), "font-bold text-start")}>Fill Questionnaire</span>
+          <span className={cn(subtitle({ sizeText: "lxl" }), "font-bold text-start")}>Generated Content</span>
           <GeneratedContent />
         </div>
       </div>
