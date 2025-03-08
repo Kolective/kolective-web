@@ -8,15 +8,12 @@ export const useAddressAI = () => {
   const { data, isLoading, refetch } = useQuery<{ address: string }>({
     queryKey: ["addressAI"],
     queryFn: async () => {
-      const response = await apiAgent.post("action/get-wallet", { user_address: address })
+      const response = await apiAgent.post("agent/get-wallet", { user_address: address })
       return response
     },
-    retry: 5,
-    retryDelay: 100000,
-    refetchInterval: 5000,
-    retryOnMount: false,
-    refetchOnWindowFocus: false,
-    staleTime: 1000,
+    retry: 2,
+    staleTime: 30000,
+    refetchInterval: 30000,
   })
 
   return {

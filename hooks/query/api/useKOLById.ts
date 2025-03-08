@@ -6,7 +6,7 @@ interface KOL {
   kol: KOLResponse;
 }
 
-export const useKOL = ({
+export const useKOLById = ({
   username
 }: {
   username: string;

@@ -23,6 +23,9 @@ export const useKOLFollowed = ({
     queryFn: async () => {
       return await api.get(`api/kol/followed/${address}`);
     },
+    retry: 1,
+    staleTime: 1000 * 60 * 5,
+    refetchInterval: 1000 * 60 * 5,
   });
 
   const datas: KOLResponse | undefined = data?.followedKOL.kol;

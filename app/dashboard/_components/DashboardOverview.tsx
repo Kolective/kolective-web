@@ -10,7 +10,7 @@ import { Button } from '@heroui/button';
 
 export default function DashboardOverview() {
   const { address } = useAccount();
-  const { kfData } = useKOLFollowed({ address: address as string });
+  const { kfData, kfLoading } = useKOLFollowed({ address: address as string });
 
   return (
     <div className="p-6 space-y-8 border-2 border-default-200 rounded-xl">
@@ -66,11 +66,16 @@ export default function DashboardOverview() {
             </div>
           </motion.div>
         </div>
-      ) : (
+      ) : kfLoading ? (
         <div className="animate-pulse space-y-4">
           <div className="h-24 bg-gray-500 rounded-lg" />
           <div className="h-20 bg-gray-500 rounded-lg" />
           <div className="h-48 bg-gray-500 rounded-lg" />
+        </div>
+      ) : (
+        <div className="flex flex-col items-center justify-center space-y-4">
+          <span className="text-lg font-semibold">No KOL Followed</span>
+          <span className="text-default-400">You haven&apos;t followed any KOL yet</span>
         </div>
       )}
     </div>

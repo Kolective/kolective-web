@@ -22,8 +22,8 @@ export const useCreateWalletAI = () => {
   const mutation = useMutation({
     mutationFn: async ({ user_address }: { user_address: string }) => {
       setSteps([{ step: 1, status: "loading" }]);
-      const response = await apiAgent.post("action/create-wallet", { user_address: user_address });
-      apiAgent.post("action/get-eth-faucet", { user_address: address });
+      const response = await apiAgent.post("agent/create-wallet", { user_address: user_address });
+      apiAgent.post("agent/get-eth-faucet", { user_address: address });
       return response as CreateWalletResponse;
     },
     onSuccess: (data) => {

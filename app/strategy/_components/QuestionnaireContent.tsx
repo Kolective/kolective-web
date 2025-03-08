@@ -3,8 +3,8 @@ import { Form } from "@heroui/form";
 import { Select, SelectItem } from "@heroui/select";
 import { dataForm } from "@/data/data-form";
 import { useGenerateAI } from "@/hooks/mutation/api/useGenerateAI";
-import { Loader2 } from "lucide-react";
 import { ButtonSoniclabs } from "@/components/button/button-soniclabs";
+import Loading from "@/components/loader/loading";
 
 interface FormData {
   [key: number]: number | null;
@@ -47,6 +47,10 @@ export default function QuestionnaireContent() {
     }));
   };
 
+  if (mutation.isPending) {
+    return <Loading />;
+  }
+
   return (
     <div className="flex flex-col gap-4">
       <p className="text-neutral-800 dark:text-neutral-200 text-sm md:text-lg font-normal">
@@ -81,7 +85,7 @@ export default function QuestionnaireContent() {
           type="submit"
           fullWidth={true}
           disabled={mutation.isPending}
-          textTag={mutation.isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : <span>Submit</span>}
+          textTag={<span>Submit</span>}
         />
       </Form>
     </div>

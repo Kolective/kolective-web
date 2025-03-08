@@ -3,7 +3,7 @@ import ModalTransfer from "@/components/modal/modal-transfer";
 import { subtitle } from "@/components/primitives";
 import { useTransfer } from "@/hooks/mutation/useTransfer";
 import { useToken } from "@/hooks/query/api/useToken";
-// import { useAddressAI } from "@/hooks/query/useAddressAI";
+import { useAddressAI } from "@/hooks/query/useAddressAI";
 import { useBalance } from "@/hooks/query/useBalance";
 import { formatNumberOri } from "@/lib/custom-helper";
 import { cn } from "@/lib/utils";
@@ -15,8 +15,7 @@ import { useState } from "react";
 
 export default function DashboardMainWallet() {
   const { tData } = useToken();
-  // const { addressAI } = useAddressAI();
-  const addressAI = "0x123"
+  const { addressAI } = useAddressAI();
 
   return (
     <div>

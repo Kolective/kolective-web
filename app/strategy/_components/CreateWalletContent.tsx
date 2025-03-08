@@ -26,6 +26,10 @@ export default function CreateWalletContent({
     setIsModalOpen(false);
   }, []);
 
+  const handleCopy = () => {
+    navigator.clipboard.writeText(addressAI.toString())
+  }
+
   return (
     <div className="flex flex-col gap-4">
       <p className="text-neutral-800 dark:text-neutral-200 text-sm md:text-lg font-normal">
@@ -38,7 +42,7 @@ export default function CreateWalletContent({
           className='w-fit'
           title="Your Wallet Address"
           hideSymbol
-          onCopy={() => setIsModalOpen(true)}
+          onCopy={handleCopy}
         >
           {addressAI.toString()}
         </Snippet>

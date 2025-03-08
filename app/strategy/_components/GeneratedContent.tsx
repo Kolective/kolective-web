@@ -15,15 +15,18 @@ import ModalTransfer from '@/components/modal/modal-transfer';
 import { useToken } from '@/hooks/query/api/useToken';
 import SkeletonWrapper from '@/components/loader/skeleton-wrapper';
 import React from 'react';
+import { cn } from '@/lib/utils';
 
 export default function GeneratedContent({
   kfData,
   kfLoading,
-  addressAI
+  addressAI,
+  colorBorderRisk
 }: {
   kfData?: KOLResponse;
   kfLoading: boolean;
   addressAI: HexAddress;
+  colorBorderRisk: string;
 }) {
   const [isModalTransactionOpen, setIsModalTransactionOpen] = useState(false);
   const { mutation, txHash } = useTransfer();
@@ -53,14 +56,6 @@ export default function GeneratedContent({
     });
   }
 
-  const colorRisk = kfData?.riskRecommendation 
-    ? kfData.riskRecommendation === "CONSERVATIVE" 
-      ? "text-green-500" 
-      : kfData.riskRecommendation === "BALANCED" 
-        ? "text-yellow-500" 
-        : "text-red-500"
-    : "default";
-
   const closeModalTransaction = () => setIsModalTransactionOpen(false);
 
   return (
@@ -68,10 +63,7 @@ export default function GeneratedContent({
       {(mutation.isPending) && <Loading />}
       {!kfLoading && kfData ? (
         <React.Fragment>
-          <p className="text-neutral-800 dark:text-neutral-200 text-sm md:text-lg font-normal mb-4">
-            You classified as <span className={`font-semibold ${colorRisk}`}>{kfData && kfData?.riskRecommendation}</span> risk. here&apos;s our recommended kol for you:
-          </p>
-          <Card className="p-6 bg-background/50 shadow-lg rounded-xl border-2 border-warning">
+          <Card className={cn("p-6 bg-background/50 shadow-lg rounded-xl border-2", `${colorBorderRisk}`)}>
             <CardHeader className="flex flex-col gap-5 sm:flex-row justify-between items-center">
               <div className='flex flex-row gap-4 items-center'>
                 <SkeletonWrapper isLoading={kfLoading} className="rounded-full min-w-12 min-h-12">

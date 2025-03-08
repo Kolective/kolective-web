@@ -46,7 +46,6 @@ const ModalTransfer = ({
   };
 
   const isAmountValid = amount !== '' && Number(amount) > 0 && Number(amount) <= maxAmount;
-  const isRecipientValid = recipient.trim() !== '';
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -99,7 +98,7 @@ const ModalTransfer = ({
           <Button variant="bordered" onPress={onClose} className="flex-1">
             Cancel
           </Button>
-          <Button color="warning" onPress={onTransfer} className="flex-1" isDisabled={!isAmountValid || !isRecipientValid || isLoading}>
+          <Button color="warning" onPress={onTransfer} className="flex-1" isDisabled={!isAmountValid || isLoading}>
             {isLoading ? (
               <Loader2 className="w-4 h-4 animate-spin" />
             ) : (
