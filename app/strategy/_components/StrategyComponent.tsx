@@ -10,8 +10,12 @@ import GeneratedContent from "./GeneratedContent";
 import { TracingBeam } from "@/components/ui/tracing-beam";
 import { subtitle } from "@/components/primitives";
 import { cn } from "@/lib/utils";
+import { useKOLFollowed } from "@/hooks/query/api/useKOLFollowed";
+import { useAccount } from "wagmi";
 
 const StrategyComponent: React.FC = () => {
+  const { address } = useAccount();
+  const { kfData, kfLoading } = useKOLFollowed({ address: address as string });
   // const { isConnected } = useAccount();
   // const { addressAI, laAI } = useAddressAI();
   const addressAI = "0x123";
@@ -33,7 +37,7 @@ const StrategyComponent: React.FC = () => {
         </div>
         <div>
           <span className={cn(subtitle({ sizeText: "lxl" }), "font-bold text-start")}>Generated Content</span>
-          <GeneratedContent />
+          <GeneratedContent kfData={kfData} kfLoading={kfLoading} addressAI={addressAI}/>
         </div>
       </div>
     </TracingBeam>

@@ -6,7 +6,7 @@ export const TweetResponseSchema = z.object({
   tokenId: z.number(),
   content: z.string(),
   signal: z.enum(["BUY", "SELL"]),
-  risk: z.enum(["CONSERVATIVE", "AGGRESSIVE"]),
+  risk: z.enum(["CONSERVATIVE", "BALANCED", "AGGRESSIVE"]),
   timestamp: z.string(),
   expired: z.boolean(),
   valid: z.boolean(),

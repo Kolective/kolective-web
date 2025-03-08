@@ -1,13 +1,8 @@
-import ModalSwap from '@/components/modal/modal-swap';
-import ModalTransactionCustom from '@/components/modal/modal-transaction-custom';
 import { subtitle } from '@/components/primitives';
 import { InfiniteMovingCards } from '@/components/ui/infinite-moving-cards';
-import { useSwapAI } from '@/hooks/mutation/api/useSwapAI';
 import { useKOLFollowed } from '@/hooks/query/api/useKOLFollowed';
-import { useBalanceAI } from '@/hooks/query/useBalanceAI';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
-import React, { useState } from 'react';
 import { useAccount } from 'wagmi';
 import { formatNumberOri } from '@/lib/custom-helper';
 import { ButtonSoniclabsGlow } from '@/components/button/button-soniclabs';
@@ -16,20 +11,6 @@ import { Button } from '@heroui/button';
 export default function DashboardOverview() {
   const { address } = useAccount();
   const { kfData } = useKOLFollowed({ address: address as string });
-  const [isModalTransactionOpen, setIsModalTransactionOpen] = useState(false);
-  const { mutation, result } = useSwapAI();
-
-  const tweetsKOL = kfData?.tweets || [];
-  const sortTweets = tweetsKOL.sort((a, b) => Number(b.timestamp) - Number(a.timestamp));
-  const latestTweet = sortTweets[0];
-
-  const { bNormalized } = useBalanceAI({ token: latestTweet?.token?.addressToken as HexAddress, decimals: latestTweet?.token?.decimals });
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [amountFrom, setAmountFrom] = useState('0');
-
-  const handleConfirmStake = () => setIsModalOpen(false);
-  const closeModalTransaction = () => setIsModalTransactionOpen(false);
 
   return (
     <div className="p-6 space-y-8 border-2 border-default-200 rounded-xl">
@@ -38,7 +19,7 @@ export default function DashboardOverview() {
           <div className="flex flex-col items-start justify-start pb-4 w-full">
             <div className='flex flex-row items-center gap-3 mb-2'>
               <motion.img
-                src={kfData.avatar}
+                src={kfData.avatar || "/placeholder-person.jpg"}
                 alt={kfData.name}
                 width={100}
                 height={100}
@@ -92,27 +73,6 @@ export default function DashboardOverview() {
           <div className="h-48 bg-gray-500 rounded-lg" />
         </div>
       )}
-
-      <ModalSwap
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onConfirm={handleConfirmStake}
-        fromAmount={amountFrom}
-        setFromAmount={setAmountFrom}
-        toAmount={(parseFloat(amountFrom) * (latestTweet?.token?.priceChange24H || 1)).toString()}
-        fromToken="SONIC"
-        toToken={latestTweet?.token?.name || ""}
-        isLoading={mutation.isPending}
-        maxFromAmount={bNormalized}
-      />
-
-      <ModalTransactionCustom
-        isOpen={isModalTransactionOpen}
-        setIsOpen={closeModalTransaction}
-        status={mutation.status || ""}
-        data={result?.txhash || ""}
-        name="trade"
-      />
     </div>
   );
 }

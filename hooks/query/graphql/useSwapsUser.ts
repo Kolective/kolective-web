@@ -2,7 +2,6 @@ import { querySwapsByUser } from "@/graphql/swap.query";
 import { Swaps } from "@/types/graphql/swap.types";
 import { useQuery } from "@tanstack/react-query";
 import request from "graphql-request";
-import { useAccount } from "wagmi";
 
 interface SwapResponse {
   swaps: {
@@ -10,9 +9,11 @@ interface SwapResponse {
   }
 }
 
-export const useSwapsUser = () => {
-  const { address } = useAccount();
-
+export const useSwapsUser = ({
+  address
+}: {
+  address: HexAddress
+}) => {
   const { data, isLoading, error, refetch } = useQuery<SwapResponse>({
     queryKey: ['gql-swaps-user', address],
     queryFn: async () => {
@@ -29,6 +30,8 @@ export const useSwapsUser = () => {
     refetchInterval: 10000,
     staleTime: 10000
   })
+
+  console.log("data = ", data);
 
   return {
     suData: data?.swaps.items || [],

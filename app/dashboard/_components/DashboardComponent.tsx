@@ -5,6 +5,7 @@ import DashboardMainWallet from "./DashboardMainWallet";
 import DashboardAIWallet from "./DashboardAIWallet";
 import DashboardOverview from "./DashboardOverview";
 import DashboardHistory from "./DashboardHistory";
+import DashboardPositions from "./DashboardPositions";
 
 const tabKeys = ["overview", "positions", "history", "main", "ai"];
 
@@ -52,7 +53,7 @@ export default function DashboardComponent() {
             </div>
           }
         >
-          <DashboardMainWallet />
+          <DashboardPositions />
         </Tab>
         <Tab
           key="history"

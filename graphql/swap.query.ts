@@ -8,14 +8,16 @@ export const querySwaps = () => {
     ) {
       items {
         id
+        sellPrice
+        buyPrice
+        amountIn
+        amountOut
         sender
         tokenIn
         tokenOut
-        transactionHash
-        amountOut
-        amountIn
         blockNumber
         blockTimestamp
+        transactionHash
       }
     }
   }`
@@ -30,14 +32,16 @@ export const querySwapsByUser = (address: string) => {
     ) {
       items {
         id
+        sellPrice
+        buyPrice
+        amountIn
+        amountOut
         sender
         tokenIn
         tokenOut
-        transactionHash
-        amountOut
-        amountIn
         blockNumber
         blockTimestamp
+        transactionHash
       }
     }
   }`

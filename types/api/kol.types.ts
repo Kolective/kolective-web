@@ -8,7 +8,7 @@ export const KOLResponseSchema = z.object({
   avatar: z.string().url(),
   followersTwitter: z.number(),
   followersKOL: z.number(),
-  riskRecommendation: z.enum(["CONSERVATIVE", "AGGRESSIVE"]),
+  riskRecommendation: z.enum(["CONSERVATIVE", "BALANCED", "AGGRESSIVE"]),
   avgProfitD: z.number(),
   rankFollowersKOL: z.number(),
   rankAvgProfitD: z.number(),

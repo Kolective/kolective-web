@@ -25,25 +25,7 @@ export const useKOLFollowed = ({
     },
   });
 
-  console.log("data", data);
-
-  const defaultKOLResponse: KOLResponse = {
-    id: 0,
-    name: '',
-    username: '',
-    avatar: '',
-    followersTwitter: 0,
-    followersKOL: 0,
-    riskRecommendation: 'CONSERVATIVE',
-    avgProfitD: 0,
-    rankFollowersKOL: 0,
-    rankAvgProfitD: 0,
-    createdAt: '',
-    updatedAt: '',
-    tweets: []
-  };
-
-  const datas: KOLResponse = data?.followedKOL.kol || defaultKOLResponse;
+  const datas: KOLResponse | undefined = data?.followedKOL.kol;
 
   return {
     kfData: datas,

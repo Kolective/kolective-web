@@ -1,5 +1,4 @@
 import ModalTransactionCustom from "@/components/modal/modal-transaction-custom";
-import { useMintAI } from "@/hooks/mutation/api/useMintAI";
 import { useMint } from "@/hooks/mutation/useMint";
 import { cn } from "@/lib/utils";
 import { TokenResponse } from "@/types/api/token.types";
@@ -44,21 +43,8 @@ const Feature = ({
   buttonColor: string;
 }) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [isModalOpenAI, setIsModalOpenAI] = useState<boolean>(false);
 
   const { mutation: mintMutation, txHash } = useMint();
-  const { mutation: mintMutationAI, result: txHashAI } = useMintAI();
-
-  const handleMintAI = async () => {
-    mintMutationAI.mutate({
-      asset_id: token.name.toLowerCase() || '',
-      amount: "1000",
-    }, {
-      onSuccess: () => {
-        setIsModalOpenAI(true);
-      }
-    });
-  }
 
   const handleMint = async () => {
     mintMutation.mutate({
@@ -74,10 +60,6 @@ const Feature = ({
 
   const closeModal = useCallback(() => {
     setIsModalOpen(false);
-  }, []);
-
-  const closeModalAI = useCallback(() => {
-    setIsModalOpenAI(false);
   }, []);
 
   return (
@@ -103,26 +85,12 @@ const Feature = ({
         <span>Claim 1000 $SONIC</span>
       </Button>
 
-      <Button variant="flat" color={buttonColor as "success" | "secondary" | "warning" | "primary" | "default" | "danger" | undefined} className={cn("mt-4 mx-10", `flex flex-row items-center`)} onPress={handleMintAI}>
-        <Wallet className="w-4 h-4" />
-        <span>Claim 1000 $SONIC to AI</span>
-      </Button>
-
       <ModalTransactionCustom
         isOpen={isModalOpen}
         setIsOpen={closeModal}
         status={mintMutation.status || ""}
         data={txHash || ""}
         errorMessage={mintMutation.error?.message || undefined}
-        name='mint'
-      />
-
-      <ModalTransactionCustom
-        isOpen={isModalOpenAI}
-        setIsOpen={closeModalAI}
-        status={mintMutationAI.status || ""}
-        data={txHashAI?.txhash || ""}
-        errorMessage={mintMutationAI.error?.message || undefined}
         name='mint'
       />
     </div>

@@ -56,7 +56,7 @@ export const siteConfig = {
     }
   ],
   links: {
-    github: "https://github.com",
+    github: "https://github.com/Kolective",
     docs: "https://google.com",
   },
 };

@@ -8,6 +8,8 @@ export const SwapsSchema = z.object({
   transactionHash: z.string(),
   amountOut: z.string(), 
   amountIn: z.string(),
+  buyPrice: z.string(),
+  sellPrice: z.string(),
   blockNumber: z.string(),
   blockTimestamp: z.string(),
 });
