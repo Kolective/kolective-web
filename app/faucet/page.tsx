@@ -37,9 +37,7 @@ export default function Page() {
             Claims your faucet for testing purpose here.
           </motion.span>
         </div>
-        <div>
-          {isConnected ? <FaucetComponent token={sToken} /> : <WalletConnection />}
-        </div>
+        {isConnected ? <div><FaucetComponent token={sToken} /></div> : <WalletConnection />}
       </div>
     </div>
   )
