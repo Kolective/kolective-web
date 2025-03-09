@@ -18,7 +18,9 @@ const PAGE_SIZE = 10;
 
 export default function DashboardHistory() {
   const { tuData, tuLoading } = useTransfersUser({ wallet: "ai" });
+  const { tuData: tuDataUser, tuLoading: tuLoadingUser } = useTransfersUser({ wallet: "user" });
   const { suData, suLoading } = useSwapsUser({ wallet: "ai" });
+  const { suData: suDataUser, suLoading: suLoadingUser } = useSwapsUser({ wallet: "user" });
 
   const [selectedType, setSelectedType] = useState<'transfers' | 'swaps'>('transfers');
   const [sortConfig, setSortConfig] = useState<{ key: string | null; direction: 'asc' | 'desc' }>({
@@ -26,8 +28,6 @@ export default function DashboardHistory() {
     direction: 'desc'
   });
   const [currentPage, setCurrentPage] = useState(1);
-
-  const isLoading = selectedType === 'transfers' ? tuLoading : suLoading;
 
   const handleTypeChange = useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedType(e.target.value as 'transfers' | 'swaps');
@@ -62,29 +62,28 @@ export default function DashboardHistory() {
       { key: 'sellPrice', label: 'Token Price' },
     ], [selectedType]);
 
-  const sortedData = useMemo(() => {
-    const data = selectedType === 'transfers' ? tuData : suData;
-    if (!data || !Array.isArray(data)) return [];
+    const isLoading = selectedType === 'transfers' ? tuLoading || tuLoadingUser : suLoading || suLoadingUser;
 
-    return [...data].sort((a, b) => {
-      if (!sortConfig.key) return 0;
-
-      const keyPath = sortConfig.key as keyof (typeof tuData[0] & typeof suData[0]);
-      let valA = (keyPath in a) ? (a as any)[keyPath] : '';
-      let valB = (keyPath in b) ? (b as any)[keyPath] : '';
-
-      // Special handling for numeric values
-      if (keyPath === 'blockNumber' || keyPath === 'blockTimestamp' ||
-        keyPath === 'value' || keyPath === 'amountIn' || keyPath === 'amountOut') {
-        valA = Number(valA);
-        valB = Number(valB);
-      }
-
-      return sortConfig.direction === 'asc'
-        ? valA > valB ? 1 : valA < valB ? -1 : 0
-        : valA < valB ? 1 : valA > valB ? -1 : 0;
-    });
-  }, [tuData, suData, selectedType, sortConfig]);
+    const combinedData = useMemo(() => {
+      const aiData = selectedType === 'transfers' ? tuData : suData;
+      const userData = selectedType === 'transfers' ? tuDataUser : suDataUser;
+      return [...(aiData || []), ...(userData || [])];
+    }, [selectedType, tuData, tuDataUser, suData, suDataUser]);
+  
+    const sortedData = useMemo(() => {
+      if (!combinedData.length) return [];
+      return [...combinedData].sort((a, b) => {
+        if (!sortConfig.key) return 0;
+        const keyPath = sortConfig.key as keyof typeof combinedData[0];
+        let valA: any = a[keyPath] ?? '';
+        let valB: any = b[keyPath] ?? '';
+        if (['blockNumber', 'blockTimestamp', 'value', 'amountIn', 'amountOut'].includes(sortConfig.key)) {
+          valA = Number(valA);
+          valB = Number(valB);
+        }
+        return sortConfig.direction === 'asc' ? (valA > valB ? 1 : -1) : (valA < valB ? 1 : -1);
+      });
+    }, [combinedData, sortConfig]);
 
   // Pagination calculations
   const totalItems = sortedData.length;
