@@ -87,7 +87,7 @@ const Feature = ({
         onPress={handleMint}
       >
         <Wallet className="w-4 h-4" />
-        <span>Claim 1000 $SONIC</span>
+        <span>Claim 1000 $S</span>
       </Button>
 
       <ModalTransactionCustom
