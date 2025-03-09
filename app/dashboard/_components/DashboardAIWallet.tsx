@@ -1,7 +1,7 @@
 import ModalTransactionCustom from "@/components/modal/modal-transaction-custom";
 import ModalTransfer from "@/components/modal/modal-transfer";
 import { subtitle } from "@/components/primitives";
-import { useTransfer } from "@/hooks/mutation/useTransfer";
+import { useTransferAI } from "@/hooks/mutation/api/useTransferAI";
 import { useToken } from "@/hooks/query/api/useToken";
 import { useAddressAI } from "@/hooks/query/useAddressAI";
 import { useBalanceAI } from "@/hooks/query/useBalanceAI";
@@ -83,7 +83,7 @@ const Feature = ({
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isModalOpenTransaction, setIsModalOpenTransaction] = useState<boolean>(false);
   const [amount, setAmount] = useState<string>("");
-  const { mutation, txHash } = useTransfer();
+  const { mutation, txHash } = useTransferAI();
 
   const closeModal = () => {
     setIsModalOpen(false);
@@ -93,8 +93,7 @@ const Feature = ({
     mutation.mutate({
       addressToken: token.addressToken as HexAddress,
       toAddress: address,
-      value: amount,
-      decimals: token.decimals,
+      value: amount
     });
   }
   return (

@@ -13,6 +13,10 @@ export const siteConfig = {
       href: "/strategy",
     },
     {
+      label: "Swap",
+      href: "/swap",
+    },
+    {
       label: "Bridge",
       href: "/bridge",
     },
@@ -39,6 +43,10 @@ export const siteConfig = {
       href: "/strategy",
     },
     {
+      label: "Swap",
+      href: "/swap",
+    },
+    {
       label: "Bridge",
       href: "/bridge",
     },
@@ -57,6 +65,6 @@ export const siteConfig = {
   ],
   links: {
     github: "https://github.com/Kolective",
-    docs: "https://google.com",
+    docs: "https://kolective.gitbook.io/docs",
   },
 };
