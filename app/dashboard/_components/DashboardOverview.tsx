@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 import { useAccount } from 'wagmi';
 import { formatNumberOri } from '@/lib/custom-helper';
 import { ButtonSoniclabsGlow } from '@/components/button/button-soniclabs';
-import { Button } from '@heroui/button';
+import ModalUnfollow from '@/components/modal/modal-unfollow';
 
 export default function DashboardOverview() {
   const { address } = useAccount();
@@ -48,9 +48,7 @@ export default function DashboardOverview() {
             <motion.div className='mt-5 flex flex-col gap-3 w-fit' initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.6 }}>
               <div className='flex flex-row gap-3'>
                 <ButtonSoniclabsGlow text='Already Followed' />
-                <Button variant='flat' color='danger' className='rounded-md'>
-                  Unfollow
-                </Button>
+                <ModalUnfollow kolId={kfData.id} kol={kfData} />
               </div>
             </motion.div>
           </div>

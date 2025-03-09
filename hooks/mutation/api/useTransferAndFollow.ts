@@ -1,3 +1,4 @@
+import api from "@/config/api.config";
 import { TokenABI } from "@/lib/abis/TokenABI";
 import { denormalize, valueToBigInt } from "@/lib/bignumber";
 import { DECIMALS_TOKEN } from "@/lib/constants";
@@ -12,8 +13,8 @@ import {
 
 type Status = "idle" | "loading" | "success" | "error";
 
-export const useMint = () => {
-  const { address: userAddress } = useAccount();
+export const useTransferAndFollow = () => {
+  const { address } = useAccount();
 
   const [steps, setSteps] = useState<
     Array<{
@@ -33,21 +34,25 @@ export const useMint = () => {
   const mutation = useMutation({
     mutationFn: async ({
       addressToken,
-      amount,
-      decimals
+      toAddress,
+      value,
+      decimals,
+      kolId
     }: {
       addressToken: HexAddress;
-      amount: string;
+      toAddress: HexAddress;
+      value: string;
       decimals?: number;
+      kolId: number;
     }) => {
       try {
         setSteps([{ step: 1, status: "idle" }]);
 
-        if (!amount || !userAddress) {
+        if (!value || !toAddress) {
           throw new Error("Invalid parameters");
         }
 
-        const dAmount = denormalize(amount || "0", decimals ?? DECIMALS_TOKEN);
+        const dAmount = denormalize(value || "0", decimals ?? DECIMALS_TOKEN);
 
         setSteps((prev) =>
           prev.map((item) => {
@@ -61,9 +66,9 @@ export const useMint = () => {
         const txHash = await writeContract(config, {
           address: addressToken,
           abi: TokenABI,
-          functionName: "mint",
+          functionName: "transfer",
           args: [
-            userAddress,
+            toAddress,
             valueToBigInt(dAmount),
           ],
         });
@@ -74,16 +79,22 @@ export const useMint = () => {
           hash: txHash,
         });
 
-        setSteps((prev) =>
-          prev.map((item) => {
-            if (item.step === 1) {
-              return { ...item, status: "success" };
-            }
-            return item;
-          })
-        );
+        if (result) {
+          const res = await api.post("api/kol/follow", { kolId: kolId, userAddress: address });
 
-        return result;
+          if (res.status === 200) {
+            setSteps((prev) =>
+              prev.map((item) => {
+                if (item.step === 1) {
+                  return { ...item, status: "success" };
+                }
+                return item;
+              })
+            );
+
+            return result;
+          }
+        }
       } catch (e) {
         console.error("Error", e);
 

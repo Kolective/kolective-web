@@ -26,8 +26,8 @@ export const useRecommendKOLAI = ({
     },
     enabled: !!riskAI,
     retry: 1,
-    refetchInterval: 20000,
-    staleTime: 20000
+    refetchInterval: 6000000,
+    staleTime: 6000000
   })
 
   return {

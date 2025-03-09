@@ -12,6 +12,8 @@ import { useRiskProfileAI } from "@/hooks/query/useRiskProfileAI";
 import { useKOL } from "@/hooks/query/api/useKOL";
 import Loading from "@/components/loader/loading";
 import { useRecommendKOLAI } from "@/hooks/query/api/useRecommendKOLAI";
+import { motion } from "framer-motion";
+import { KOLResponse } from "@/types/api/kol.types";
 
 const StrategyComponent: React.FC = () => {
   const { kData, kLoading } = useKOL();
@@ -19,6 +21,8 @@ const StrategyComponent: React.FC = () => {
   const { riskAI } = useRiskProfileAI();
 
   const filterKolByRisk = kData && riskAI && kData.filter((kol) => kol.riskRecommendation.includes(riskAI.toUpperCase()));
+  const findRankFollowersKOL = filterKolByRisk && filterKolByRisk.sort((a, b) => a.rankFollowersKOL - b.rankFollowersKOL)[0];
+  const findRankAvgProfitD = filterKolByRisk && filterKolByRisk.sort((a, b) => a.rankAvgProfitD - b.rankAvgProfitD)[0];
 
   const colorRisk = riskAI?.toUpperCase()?.includes("CONSERVATIVE")
     ? "text-green-500"
@@ -35,9 +39,6 @@ const StrategyComponent: React.FC = () => {
   const { rData, rLoading } = useRecommendKOLAI({ riskAI: riskAI });
 
   const kolRecommendation = rData !== null && Array.isArray(filterKolByRisk) ? filterKolByRisk.find((kol) => kol.id === rData) : null;
-
-  console.log("rData", rData);
-  console.log("kolRecommendation", kolRecommendation);
 
   if (laAI || kLoading) return <Loading />;
 
@@ -64,13 +65,45 @@ const StrategyComponent: React.FC = () => {
                 You classified as <span className={`font-semibold ${colorRisk}`}>{filterKolByRisk[0]?.riskRecommendation}</span> risk. here&apos;s our recommended kol for you:
               </p>
               <div className="flex flex-col gap-5">
-                {filterKolByRisk.map((kol, idx) => {
-                  return (
-                    <GeneratedContent key={idx} kfData={kol} kfLoading={kLoading} addressAI={addressAI} colorBorderRisk={colorBorderRisk} />
-                  )
-                })}
-                <div className="flex my-5">
-                  {kolRecommendation && <GeneratedContent kfData={kolRecommendation} kfLoading={rLoading} addressAI={addressAI} colorBorderRisk={colorBorderRisk} />}
+                <div className="flex flex-col mt-5">
+                  <motion.span
+                    className={cn(subtitle({ sizeText: "lg" }), "font-bold text-start mb-2")}
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.2 }}
+                  >
+                    Recommended KOL with the most followers
+                  </motion.span>
+                  {findRankFollowersKOL && <GeneratedContent kfData={findRankFollowersKOL} kfLoading={kLoading} addressAI={addressAI} colorBorderRisk={colorBorderRisk} />}
+                </div>
+                <div className="flex flex-col my-5">
+                  <motion.span
+                    className={cn(subtitle({ sizeText: "lg" }), "font-bold text-start mb-2")}
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.2 }}
+                  >
+                    Recommended KOL with the highest average profit
+                  </motion.span>
+                  {findRankAvgProfitD && <GeneratedContent kfData={findRankAvgProfitD} kfLoading={kLoading} addressAI={addressAI} colorBorderRisk={colorBorderRisk} />}
+                </div>
+                <div className="flex flex-col mb-5">
+                  <motion.span
+                    className={cn(subtitle({ sizeText: "lg" }), "font-bold text-start mb-2")}
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.2 }}
+                  >
+                    Recommended KOL from AI
+                  </motion.span>
+                  {(rData !== null || rLoading) && (
+                    <GeneratedContent
+                      kfData={kolRecommendation as KOLResponse}
+                      kfLoading={rLoading}
+                      addressAI={addressAI}
+                      colorBorderRisk={colorBorderRisk}
+                    />
+                  )}
                 </div>
               </div>
             </div>

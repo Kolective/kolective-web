@@ -1,4 +1,4 @@
-import { MockTokenABI } from "@/lib/abis/MockTokenABI";
+import { TokenABI } from "@/lib/abis/TokenABI";
 import { denormalize, valueToBigInt } from "@/lib/bignumber";
 import { DECIMALS_TOKEN } from "@/lib/constants";
 import { config } from "@/lib/wagmi";
@@ -59,7 +59,7 @@ export const useTransfer = () => {
 
         const txHash = await writeContract(config, {
           address: addressToken,
-          abi: MockTokenABI,
+          abi: TokenABI,
           functionName: "transfer",
           args: [
             toAddress,
@@ -84,7 +84,7 @@ export const useTransfer = () => {
 
         return result;
       } catch (e) {
-        console.error("Bid Error", e);
+        console.error("Error", e);
 
         setSteps((prev) =>
           prev.map((step) => {

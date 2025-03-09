@@ -3,7 +3,7 @@ import { Modal, ModalBody, ModalContent, ModalHeader } from '@heroui/modal'
 import React from 'react'
 import { Snippet } from '@heroui/snippet'
 import Link from 'next/link';
-import { urlSepoliaBasescan } from '@/lib/utils';
+import { urlScanner } from '@/lib/utils';
 
 export default function ModalTransactionCustom({
   isOpen,
@@ -39,16 +39,24 @@ export default function ModalTransactionCustom({
             <>
               <span>Your {name} is {status}, you can see transaction hash below:</span>
               <span className='text-center'>Transaction Hash:</span>
-                <Snippet variant='flat' color="success" hideSymbol className='line-clamp-1 w-auto'>
-                  {data && data.length > 20 ? `${data.substring(0, 30)}...` : data}
-                </Snippet>
+              <Snippet
+                variant='flat'
+                color="success"
+                hideSymbol
+                className='w-auto'
+                classNames={{
+                  pre: "truncate"
+                }}
+              >
+                {data && data.length > 20 ? `${data.substring(0, 30)}...` : data}
+              </Snippet>
               <Link
-                href={urlSepoliaBasescan({ address: data && data, type: 'transaction'})}
+                href={urlScanner({ address: data && data, type: 'transaction' })}
                 target='_blank'
                 rel='noopener noreferrer'
                 className='underline underline-offset-1 cursor-pointer text-sm text-center'
               >
-                view on basescan
+                view on scanner
               </Link>
             </>
           )}

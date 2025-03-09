@@ -11,7 +11,7 @@ import { TokenResponse } from '@/types/api/token.types';
 export default function Page() {
   const { tData } = useToken();
 
-  const sToken = tData && tData.find((token: TokenResponse) => token.symbol.toLowerCase() === 'sonic');
+  const sToken = tData && tData.find((token: TokenResponse) => token.symbol.toUpperCase() === 'S');
 
   return (
     <div className="py-5 pt-24 overflow-x-hidden w-full">

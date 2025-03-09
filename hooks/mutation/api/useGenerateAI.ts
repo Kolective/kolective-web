@@ -56,9 +56,10 @@ export const useGenerateAI = () => {
           })
         );
 
+        window.location.reload();
         return response;
       } catch (e) {
-        console.error("Bid Error", e);
+        console.error("Error", e);
 
         setSteps((prev) =>
           prev.map((step) => {

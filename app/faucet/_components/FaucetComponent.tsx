@@ -80,7 +80,12 @@ const Feature = ({
         <Image src={token?.logo || "https://s2.coinmarketcap.com/static/img/coins/64x64/32684.png"} alt={token.name} width={50} height={50} className="mx-auto" />
       </div>
 
-      <Button variant="flat" color={buttonColor as "success" | "secondary" | "warning" | "primary" | "default" | "danger" | undefined} className={cn("mt-4 mx-10", `flex flex-row items-center`)} onPress={handleMint}>
+      <Button
+        variant="flat"
+        color={buttonColor as "success" | "secondary" | "warning" | "primary" | "default" | "danger" | undefined}
+        className={cn("mt-4 mx-10", `flex flex-row items-center`)}
+        onPress={handleMint}
+      >
         <Wallet className="w-4 h-4" />
         <span>Claim 1000 $SONIC</span>
       </Button>
