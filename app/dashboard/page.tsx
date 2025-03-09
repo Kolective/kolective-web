@@ -5,8 +5,12 @@ import { cn } from '@/lib/utils'
 import { motion } from 'framer-motion'
 import React from 'react'
 import DashboardComponent from './_components/DashboardComponent';
+import { useAccount } from 'wagmi';
+import WalletConnection from '@/components/wallet-connection';
 
 export default function Page() {
+  const { isConnected } = useAccount();
+
   return (
     <div className="py-5 pt-24 overflow-x-hidden w-full">
       <div className="flex flex-col gap-3 items-start">
@@ -28,7 +32,7 @@ export default function Page() {
             Manage your strategy here.
           </motion.span>
         </div>
-        <DashboardComponent />
+        {isConnected ? <DashboardComponent /> : <WalletConnection />}
       </div>
     </div>
   )

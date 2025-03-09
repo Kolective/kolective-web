@@ -5,8 +5,12 @@ import { cn } from '@/lib/utils'
 import { motion } from 'framer-motion'
 import React from 'react'
 import DeBridgeWidget from './_components/DeBridgeWidget';
+import WalletConnection from '@/components/wallet-connection';
+import { useAccount } from 'wagmi';
 
 export default function Page() {
+  const { isConnected } = useAccount();
+
   return (
     <div className="py-5 pt-24 overflow-x-hidden w-full">
       <div className="flex flex-col gap-3 items-start">
@@ -36,7 +40,7 @@ export default function Page() {
             This bridge only works on mainnet mode, but now in testing mode for hackathon purposes, but you still can use this bridge for bridge mainnet token. :)
           </motion.div>
         </div>
-        <DeBridgeWidget />
+        {isConnected ? <DeBridgeWidget /> : <WalletConnection />}
       </div>
     </div>
   )

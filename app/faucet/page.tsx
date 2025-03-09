@@ -7,9 +7,12 @@ import React from 'react'
 import { FaucetComponent } from './_components/FaucetComponent';
 import { useToken } from '@/hooks/query/api/useToken';
 import { TokenResponse } from '@/types/api/token.types';
+import WalletConnection from '@/components/wallet-connection';
+import { useAccount } from 'wagmi';
 
 export default function Page() {
   const { tData } = useToken();
+  const { isConnected } = useAccount();
 
   const sToken = tData && tData.find((token: TokenResponse) => token.symbol.toUpperCase() === 'S');
 
@@ -35,7 +38,7 @@ export default function Page() {
           </motion.span>
         </div>
         <div>
-          <FaucetComponent token={sToken} />
+          {isConnected ? <FaucetComponent token={sToken} /> : <WalletConnection />}
         </div>
       </div>
     </div>
