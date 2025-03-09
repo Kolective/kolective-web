@@ -14,9 +14,13 @@ import Loading from "@/components/loader/loading";
 import { useRecommendKOLAI } from "@/hooks/query/api/useRecommendKOLAI";
 import { motion } from "framer-motion";
 import { KOLResponse } from "@/types/api/kol.types";
+import { useKOLFollowed } from "@/hooks/query/api/useKOLFollowed";
+import { useAccount } from "wagmi";
 
 const StrategyComponent: React.FC = () => {
+  const { address } = useAccount();
   const { kData, kLoading } = useKOL();
+  const { kfData } = useKOLFollowed({ address: address as string });
   const { addressAI, laAI } = useAddressAI();
   const { riskAI } = useRiskProfileAI();
 
@@ -51,15 +55,25 @@ const StrategyComponent: React.FC = () => {
         </div>
         <div>
           <span className={cn(subtitle({ sizeText: "lxl" }), "font-bold text-start")}>Fill Questionnaire</span>
-          {addressAI ? <QuestionnaireContent /> : (
+          {kfData ? (
+            <p className="text-neutral-800 dark:text-neutral-200 text-sm md:text-lg font-normal mb-4">
+              Please unfollow your KOL first to filling the questionnaire again.
+            </p>
+          ) : addressAI ? (
+            <QuestionnaireContent />
+          ) : (
             <p className="text-neutral-800 dark:text-neutral-200 text-sm md:text-lg font-normal mb-4">
               Please create your AI wallet to start filling the questionnaire.
             </p>
           )}
         </div>
         <div>
-          <span className={cn(subtitle({ sizeText: "lxl" }), "font-bold text-start")}>Generated Content</span>
-          {addressAI && riskAI && filterKolByRisk ? (
+          <span className={cn(subtitle({ sizeText: "lxl" }), "font-bold text-start")}>Generated Recommendation KOL</span>
+          {kfData ? (
+            <p className="text-neutral-800 dark:text-neutral-200 text-sm md:text-lg font-normal mb-4">
+              Please unfollow your KOL first to generating recommendation KOL again.
+            </p>
+          ) : addressAI && riskAI && filterKolByRisk ? (
             <div>
               <p className="text-neutral-800 dark:text-neutral-200 text-sm md:text-lg font-normal mb-4">
                 You classified as <span className={`font-semibold ${colorRisk}`}>{filterKolByRisk[0]?.riskRecommendation}</span> risk. here&apos;s our recommended kol for you:

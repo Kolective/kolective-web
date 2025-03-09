@@ -3,12 +3,14 @@ import ModalTransfer from "@/components/modal/modal-transfer";
 import { subtitle } from "@/components/primitives";
 import { useTransfer } from "@/hooks/mutation/useTransfer";
 import { useToken } from "@/hooks/query/api/useToken";
+import { useAddressAI } from "@/hooks/query/useAddressAI";
 import { useBalanceAI } from "@/hooks/query/useBalanceAI";
 import { formatNumberOri } from "@/lib/custom-helper";
 import { cn } from "@/lib/utils";
 import { TokenResponse } from "@/types/api/token.types";
 import { Button } from "@heroui/button";
 import { Image } from "@heroui/image";
+import { Snippet } from "@heroui/snippet";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { useAccount } from "wagmi";
@@ -16,21 +18,53 @@ import { useAccount } from "wagmi";
 export default function DashboardAIWallet() {
   const { tData } = useToken();
   const { address } = useAccount();
+  const { addressAI } = useAddressAI();
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(addressAI.toString())
+  }
 
   return (
-    <div>
-      <motion.h2
-        className={cn(subtitle({ sizeText: "lxl" }), "font-bold text-start")}
-        initial={{ opacity: 0, y: -5 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4, delay: 0.1 }}
-      >
-        List your tokens
-      </motion.h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 relative z-10 py-10 max-w-7xl mx-auto">
-        {tData && tData.length > 0 && tData?.map((t, i) => (
-          <Feature key={t.id} index={i} token={t} address={address as HexAddress}/>
-        ))}
+    <div className="flex flex-col gap-5 w-full">
+      <div className="flex flex-col gap-2 w-auto sm:w-fit">
+        <motion.h2
+          className={cn(subtitle({ sizeText: "lxl" }), "font-bold text-start")}
+          initial={{ opacity: 0, y: -5 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.1 }}
+        >
+          Wallet Details
+        </motion.h2>
+        {addressAI &&
+          <Snippet
+            variant='flat'
+            color='warning'
+            className='w-full sm:w-auto'
+            classNames={{
+              pre: "truncate"
+            }}
+            title="Your Wallet Address"
+            hideSymbol
+            onCopy={handleCopy}
+          >
+            {addressAI.toString()}
+          </Snippet>
+        }
+      </div>
+      <div className="flex flex-col gap-2 w-full">
+        <motion.h2
+          className={cn(subtitle({ sizeText: "lxl" }), "font-bold text-start")}
+          initial={{ opacity: 0, y: -5 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.1 }}
+        >
+          List your tokens
+        </motion.h2>
+        <div className="grid w-full grid-cols-1 md:grid-cols-2 lg:grid-cols-4 relative z-10 py-10 max-w-7xl mx-auto">
+          {tData && tData.length > 0 && tData?.map((t, i) => (
+            <Feature key={t.id} index={i} token={t} address={address as HexAddress} />
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -46,14 +80,14 @@ const Feature = ({
   address: HexAddress;
 }) => {
   const { bNormalized } = useBalanceAI({ token: token.addressToken as HexAddress, decimals: token.decimals });
-    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-    const [isModalOpenTransaction, setIsModalOpenTransaction] = useState<boolean>(false);
-    const [amount, setAmount] = useState<string>("");
-    const { mutation, txHash } = useTransfer();
-    
-    const closeModal = () => {
-      setIsModalOpen(false);
-    }
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isModalOpenTransaction, setIsModalOpenTransaction] = useState<boolean>(false);
+  const [amount, setAmount] = useState<string>("");
+  const { mutation, txHash } = useTransfer();
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  }
 
   const handleTransfer = async () => {
     mutation.mutate({
@@ -104,14 +138,14 @@ const Feature = ({
         Transfer to Main Wallet
       </Button>
 
-      <ModalTransfer 
+      <ModalTransfer
         isOpen={isModalOpen}
         onClose={closeModal}
         onTransfer={handleTransfer}
         amount={amount}
         setAmount={setAmount}
         recipient={address}
-        setRecipient={() => {}}
+        setRecipient={() => { }}
         token={token.symbol}
         isLoading={mutation.isPending}
         maxAmount={bNormalized}

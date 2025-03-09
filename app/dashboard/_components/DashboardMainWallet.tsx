@@ -10,27 +10,61 @@ import { cn } from "@/lib/utils";
 import { TokenResponse } from "@/types/api/token.types";
 import { Button } from "@heroui/button";
 import { Image } from "@heroui/image";
+import { Snippet } from "@heroui/snippet";
 import { motion } from "framer-motion";
 import { useState } from "react";
+import { useAccount } from "wagmi";
 
 export default function DashboardMainWallet() {
   const { tData } = useToken();
+  const { address } = useAccount();
   const { addressAI } = useAddressAI();
 
+  const handleCopy = () => {
+    navigator.clipboard.writeText(addressAI.toString())
+  }
+
   return (
-    <div>
-      <motion.h2
-        className={cn(subtitle({ sizeText: "lxl" }), "font-bold text-start")}
-        initial={{ opacity: 0, y: -5 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4, delay: 0.1 }}
-      >
-        List your tokens
-      </motion.h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 relative z-10 py-10 max-w-7xl mx-auto">
-        {tData && tData.length > 0 && tData?.map((t, i) => (
-          <Feature key={t.id} index={i} token={t} addressAI={addressAI} />
-        ))}
+    <div className="flex flex-col gap-5 w-full">
+      <div className="flex flex-col gap-2 w-auto sm:w-fit">
+        <motion.h2
+          className={cn(subtitle({ sizeText: "lxl" }), "font-bold text-start")}
+          initial={{ opacity: 0, y: -5 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.1 }}
+        >
+          Wallet Details
+        </motion.h2>
+        {address &&
+          <Snippet
+            variant='flat'
+            color='warning'
+            className='w-full md:w-auto'
+            classNames={{
+              pre: "truncate"
+            }}
+            title="Your Wallet Address"
+            hideSymbol
+            onCopy={handleCopy}
+          >
+            {address.toString()}
+          </Snippet>
+        }
+      </div>
+      <div className="flex flex-col gap-2 w-full">
+        <motion.h2
+          className={cn(subtitle({ sizeText: "lxl" }), "font-bold text-start")}
+          initial={{ opacity: 0, y: -5 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.1 }}
+        >
+          List your tokens
+        </motion.h2>
+        <div className="grid w-full grid-cols-1 md:grid-cols-2 lg:grid-cols-4 relative z-10 py-10 max-w-7xl mx-auto">
+          {tData && tData.length > 0 && tData?.map((t, i) => (
+            <Feature key={t.id} index={i} token={t} addressAI={addressAI} />
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -50,11 +84,11 @@ const Feature = ({
   const [isModalOpenTransaction, setIsModalOpenTransaction] = useState<boolean>(false);
   const [amount, setAmount] = useState<string>("");
   const { mutation, txHash } = useTransfer();
-  
+
   const closeModal = () => {
     setIsModalOpen(false);
   }
-  
+
   const handleTransfer = async () => {
     mutation.mutate({
       addressToken: token.addressToken as HexAddress,
@@ -105,14 +139,14 @@ const Feature = ({
         Transfer to AI Wallet
       </Button>
 
-      <ModalTransfer 
+      <ModalTransfer
         isOpen={isModalOpen}
         onClose={closeModal}
         onTransfer={handleTransfer}
         amount={amount}
         setAmount={setAmount}
         recipient={addressAI}
-        setRecipient={() => {}}
+        setRecipient={() => { }}
         token={token.symbol}
         isLoading={mutation.isPending}
         maxAmount={bNormalized}

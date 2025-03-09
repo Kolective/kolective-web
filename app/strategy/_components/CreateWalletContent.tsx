@@ -39,7 +39,10 @@ export default function CreateWalletContent({
         <Snippet
           variant='flat'
           color='warning'
-          className='w-fit'
+          className='w-full'
+          classNames={{
+            pre: "truncate"
+          }}
           title="Your Wallet Address"
           hideSymbol
           onCopy={handleCopy}
