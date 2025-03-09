@@ -6,6 +6,8 @@ import { Send, Loader2 } from 'lucide-react';
 import { formatNumberOri } from '@/lib/custom-helper';
 import { Image } from '@heroui/image';
 import Link from 'next/link';
+import { DECIMALS_TOKEN } from '@/lib/constants';
+import { useBalance } from '@/hooks/query/useBalance';
 
 interface ModalTransferProps {
   isOpen: boolean;
@@ -17,7 +19,7 @@ interface ModalTransferProps {
   setRecipient: (value: string) => void;
   token: string;
   isLoading?: boolean;
-  maxAmount?: number;
+  tokenAddress: HexAddress;
   logoToken?: string;
 }
 
@@ -31,9 +33,14 @@ const ModalTransfer = ({
   setRecipient,
   token,
   isLoading = false,
-  maxAmount = 0,
+  tokenAddress,
   logoToken
 }: ModalTransferProps) => {
+
+  const { bNormalized } = useBalance({ token: tokenAddress as HexAddress, decimals: DECIMALS_TOKEN });
+
+  const maxAmount = bNormalized || 0;
+
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     if (/^\d*\.?\d*$/.test(value) || value === '') {
@@ -76,7 +83,7 @@ const ModalTransfer = ({
 
             <div className="flex justify-between text-sm">
               <span className="text-slate-500">Available:</span>
-              <span className="font-medium">{formatNumberOri(maxAmount, { compact: true, decimals: 0 })} {token}</span>
+              <span className="font-medium">{formatNumberOri(maxAmount, { decimals: 2 })} {token}</span>
             </div>
             
             <p>Need more {token}? Get it from the <Link href='/faucet' className='text-blue-500'>faucet</Link>.</p>

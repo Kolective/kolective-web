@@ -9,7 +9,6 @@ import { ButtonSoniclabsGlow } from '@/components/button/button-soniclabs';
 import { KOLResponse } from '@/types/api/kol.types';
 import { useState } from 'react';
 import ModalTransactionCustom from '@/components/modal/modal-transaction-custom';
-import { useBalance } from '@/hooks/query/useBalance';
 import ModalTransfer from '@/components/modal/modal-transfer';
 import { useToken } from '@/hooks/query/api/useToken';
 import SkeletonWrapper from '@/components/loader/skeleton-wrapper';
@@ -37,8 +36,6 @@ export default function GeneratedContent({
   const tweetsKOL = kfData?.tweets || [];
   const sortTweets = tweetsKOL.sort((a, b) => Number(b.timestamp) - Number(a.timestamp));
   const latestTweet = sortTweets[0];
-
-  const { bNormalized } = useBalance({ token: latestTweet?.token?.addressToken as HexAddress, decimals: latestTweet?.token?.decimals });
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [amountFrom, setAmountFrom] = useState('0');
@@ -110,8 +107,8 @@ export default function GeneratedContent({
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onTransfer={handleTransfer}
+        tokenAddress={findSonicToken?.addressToken as HexAddress}
         token={findSonicToken?.symbol || ""}
-        maxAmount={bNormalized}
         amount={amountFrom}
         recipient={addressAI}
         setAmount={setAmountFrom}
