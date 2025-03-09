@@ -9,12 +9,12 @@ import { ButtonSoniclabsGlow } from '@/components/button/button-soniclabs';
 import { KOLResponse } from '@/types/api/kol.types';
 import { useState } from 'react';
 import ModalTransactionCustom from '@/components/modal/modal-transaction-custom';
-import ModalTransfer from '@/components/modal/modal-transfer';
 import { useToken } from '@/hooks/query/api/useToken';
 import SkeletonWrapper from '@/components/loader/skeleton-wrapper';
 import React from 'react';
 import { cn } from '@/lib/utils';
 import { useTransferAndFollow } from '@/hooks/mutation/api/useTransferAndFollow';
+import ModalTransferFaucet from '@/components/modal/modal-transfer-faucet';
 
 export default function GeneratedContent({
   kfData,
@@ -103,7 +103,7 @@ export default function GeneratedContent({
           </CardBody>
         </Card>
       </React.Fragment>
-      <ModalTransfer
+      <ModalTransferFaucet
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onTransfer={handleTransfer}

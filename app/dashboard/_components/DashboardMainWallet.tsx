@@ -128,7 +128,7 @@ const Feature = ({
       </div>
 
       <div className="text-neutral-700 dark:text-neutral-300 text-lg font-medium">
-        {formatNumberOri(Number(bNormalized), { compact: true })} ${token.symbol}
+        {formatNumberOri(Number(bNormalized ?? 0), { compact: true }) ?? 0} ${token.symbol}
       </div>
 
       <Button

@@ -6,8 +6,10 @@ import { Send, Loader2 } from 'lucide-react';
 import { formatNumberOri } from '@/lib/custom-helper';
 import { Image } from '@heroui/image';
 import Link from 'next/link';
+import { DECIMALS_TOKEN } from '@/lib/constants';
+import { useBalance } from '@/hooks/query/useBalance';
 
-interface ModalTransferProps {
+interface ModalTransferFaucetProps {
   isOpen: boolean;
   onClose: () => void;
   onTransfer: () => void;
@@ -17,11 +19,11 @@ interface ModalTransferProps {
   setRecipient: (value: string) => void;
   token: string;
   isLoading?: boolean;
-  maxAmount?: number;
+  tokenAddress: HexAddress;
   logoToken?: string;
 }
 
-const ModalTransfer = ({
+const ModalTransferFaucet = ({
   isOpen,
   onClose,
   onTransfer,
@@ -31,9 +33,14 @@ const ModalTransfer = ({
   setRecipient,
   token,
   isLoading = false,
-  maxAmount = 0,
+  tokenAddress,
   logoToken
-}: ModalTransferProps) => {
+}: ModalTransferFaucetProps) => {
+
+  const { bNormalized } = useBalance({ token: tokenAddress as HexAddress, decimals: DECIMALS_TOKEN });
+
+  const maxAmount = bNormalized || 0;
+
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     if (/^\d*\.?\d*$/.test(value) || value === '') {
@@ -114,4 +121,4 @@ const ModalTransfer = ({
   );
 };
 
-export default ModalTransfer;
+export default ModalTransferFaucet;
