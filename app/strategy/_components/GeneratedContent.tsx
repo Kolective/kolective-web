@@ -33,19 +33,15 @@ export default function GeneratedContent({
 
   const findSonicToken = tData?.find((token) => token.symbol === "S");
 
-  const tweetsKOL = kfData?.tweets || [];
-  const sortTweets = tweetsKOL.sort((a, b) => Number(b.timestamp) - Number(a.timestamp));
-  const latestTweet = sortTweets[0];
-
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [amountFrom, setAmountFrom] = useState('0');
 
   const handleTransfer = () => {
     mutation.mutate({
-      addressToken: latestTweet?.token?.addressToken as HexAddress,
+      addressToken: findSonicToken?.addressToken as HexAddress,
       toAddress: addressAI,
       value: amountFrom,
-      decimals: latestTweet?.token?.decimals,
+      decimals: findSonicToken?.decimals,
       kolId: kfData?.id ?? 0
     }, {
       onSuccess: () => {
